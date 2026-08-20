@@ -1,0 +1,89 @@
+/* ============================================================
+   SoleStyle — Escenas Three.js (tamaños de canvas y fallbacks)
+   ============================================================ */
+
+/* Canvas del hero: absoluto, llena la sección (z -1 en components) */
+.hero-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Contenedor del cubo de categoría: canvas llena el div */
+.category-cube canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Canvas del showcase: ratio 4:3 en desktop */
+.showcase-canvas {
+  aspect-ratio: 4 / 3;
+  width: 100%;
+}
+
+/* Canvas del showcase llena su contenedor */
+.showcase-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Canvas de la línea del timeline: altura completa de la sección */
+.timeline-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Canvas de ondas del footer: llena el footer */
+.footer-waves canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ============================================================
+   Movimiento reducido: fallback estático elegante
+   ============================================================ */
+
+/* Sin animaciones: el hero conserva su gradiente de fondo */
+.reduce-motion .hero-canvas {
+  display: none;
+}
+
+/* El título vuelve a blend normal para legibilidad sobre el gradiente */
+.reduce-motion .hero-title {
+  mix-blend-mode: normal;
+}
+
+/* Cubos de categoría: se ocultan, la tarjeta conserva su fondo gris */
+.reduce-motion .category-cube canvas {
+  display: none;
+}
+
+/* Showcase: se oculta el canvas, queda el fondo radial */
+.reduce-motion .showcase-canvas canvas {
+  display: none;
+}
+
+/* Timeline: se oculta la línea 3D, los hitos quedan estáticos */
+.reduce-motion .timeline-canvas {
+  display: none;
+}
+
+/* Footer: se ocultan las ondas, el footer oscuro queda limpio */
+.reduce-motion .footer-waves {
+  display: none;
+}
+
+/* ============================================================
+   Móvil: simplificación de escenas (DPR 1 gestionado por JS)
+   ============================================================ */
+
+/* Showcase: ratio 1:1 en móvil */
+@media (max-width: 768px) {
+  .showcase-canvas {
+    aspect-ratio: 1 / 1;
+  }
+}

@@ -1,0 +1,458 @@
+/* ============================================================
+   SoleStyle — Responsive (mobile-first)
+   Base = móvil (<768px). Luego 768-1024px y ≥1025px.
+   ============================================================ */
+
+/* ============================================================
+   BASE MÓVIL (por defecto)
+   ============================================================ */
+
+/* Espaciado de sección reducido en móvil */
+:root {
+  --space-section: 60px;
+}
+
+/* Navegación principal oculta, hamburguesa visible */
+.main-nav {
+  display: none;
+}
+
+.hamburger {
+  display: flex;
+}
+
+/* Título de sección más pequeño */
+.section-title {
+  font-size: var(--fs-xl);
+}
+
+.section-subtitle {
+  font-size: var(--fs-base);
+}
+
+/* Cabecera de sección con menos margen */
+.section-head {
+  margin-bottom: 40px;
+}
+
+/* Hero: título y subtítulo reducidos */
+.hero-title {
+  font-size: var(--fs-2xl);
+}
+
+.hero-subtitle {
+  font-size: var(--fs-base);
+}
+
+.hero-content {
+  padding-block: 60px;
+}
+
+.hero-cta {
+  margin-bottom: 32px;
+}
+
+.hero-scroll-hint {
+  bottom: 16px;
+}
+
+/* Categorías: 2 columnas */
+.categories-grid {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.category-card {
+  padding: 16px;
+}
+
+/* Showcase: 1 columna */
+.showcase {
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+/* Timeline: altura reducida */
+.timeline {
+  height: 480px;
+}
+
+/* Testimonios: flechas dentro del viewport */
+.testimonial-arrow.prev {
+  left: 8px;
+}
+
+.testimonial-arrow.next {
+  right: 8px;
+}
+
+.testimonial-slide {
+  padding: 32px 20px;
+}
+
+/* Newsletter: formulario en columna */
+.newsletter__inner {
+  padding: 40px 24px;
+}
+
+.newsletter-form {
+  flex-direction: column;
+}
+
+.newsletter-form .btn {
+  width: 100%;
+}
+
+/* Footer: 1 columna, barra inferior apilada */
+.footer-grid {
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+.footer-bottom {
+  flex-direction: column;
+  text-align: center;
+}
+
+/* Detalle de producto: galería e info apiladas */
+.product-detail {
+  grid-template-columns: 1fr;
+  gap: 40px;
+  padding-block: 32px;
+}
+
+.product-title {
+  font-size: var(--fs-xl);
+}
+
+/* Miniaturas más pequeñas */
+.gallery-thumbs .thumb {
+  width: 64px;
+  height: 64px;
+}
+
+/* Botones de acción a ancho completo */
+.detail-actions .btn {
+  flex: 1;
+}
+
+/* Tabs con menos separación */
+.tabs {
+  margin-top: 40px;
+}
+
+.tab-list {
+  gap: 20px;
+}
+
+/* Modal más compacto */
+.modal {
+  padding: 40px 24px;
+}
+
+/* Toast pegado abajo */
+.toast {
+  bottom: 16px;
+}
+
+/* Botón de filtros con margen inferior */
+.filters-toggle {
+  margin-bottom: 24px;
+}
+
+/* Toolbar del catálogo más compacto */
+.catalog-toolbar {
+  gap: 12px;
+}
+
+/* Cards en modo lista: media más angosta en móvil */
+.product-grid.list-view .product-card__media,
+.product-card.product-list .product-card__media {
+  width: 110px;
+}
+
+.product-grid.list-view .product-card__body,
+.product-card.product-list .product-card__body {
+  padding: 16px;
+}
+
+/* Botón cerrar filtros (hijo directo del sidebar) */
+.filters-sidebar > .icon-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+/* ============================================================
+   Container queries en .product-card
+   ============================================================ */
+
+/* Tarjeta estrecha: nombre menor y botón a ancho completo */
+@container (max-width: 300px) {
+  .product-card__name {
+    font-size: var(--fs-base);
+  }
+
+  .btn-add,
+  .btn-move-to-cart {
+    width: 100%;
+  }
+
+  .product-card__body {
+    padding: 16px;
+  }
+}
+
+/* Tarjeta ancha: botones en fila */
+@container (min-width: 301px) {
+  .btn-add,
+  .btn-move-to-cart {
+    align-self: flex-start;
+  }
+}
+
+/* ============================================================
+   TABLET (768px - 1024px)
+   ============================================================ */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Grid de productos: 2 columnas */
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  /* Catálogo: sidebar estático en 2 columnas */
+  .catalog-layout {
+    grid-template-columns: 240px 1fr;
+    gap: 32px;
+  }
+
+  .filters-sidebar {
+    position: static;
+    transform: none;
+    width: auto;
+    padding: 0;
+    overflow: visible;
+    box-shadow: none;
+  }
+
+  .filters-sidebar > .icon-btn {
+    display: none;
+  }
+
+  .filters-overlay {
+    display: none;
+  }
+
+  .filters-toggle {
+    display: none;
+  }
+
+  /* Footer: 2 columnas */
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
+
+  /* Cards en modo lista: media intermedia */
+  .product-grid.list-view .product-card__media,
+  .product-card.product-list .product-card__media {
+    width: 200px;
+  }
+
+  /* Timeline: altura completa */
+  .timeline {
+    height: 600px;
+  }
+}
+
+/* ============================================================
+   DESKTOP (≥1025px)
+   ============================================================ */
+
+@media (min-width: 1025px) {
+  /* Espaciado de sección completo */
+  :root {
+    --space-section: 120px;
+  }
+
+  /* Navegación visible, hamburguesa oculta */
+  .main-nav {
+    display: flex;
+  }
+
+  .hamburger {
+    display: none;
+  }
+
+  /* Títulos a escala completa */
+  .section-title {
+    font-size: var(--fs-2xl);
+  }
+
+  .section-subtitle {
+    font-size: var(--fs-md);
+  }
+
+  .section-head {
+    margin-bottom: 56px;
+  }
+
+  /* Hero a escala completa */
+  .hero-title {
+    font-size: var(--fs-3xl);
+  }
+
+  .hero-subtitle {
+    font-size: var(--fs-lg);
+  }
+
+  .hero-cta {
+    margin-bottom: 48px;
+  }
+
+  .hero-scroll-hint {
+    bottom: 32px;
+  }
+
+  /* Categorías: 3 columnas */
+  .categories-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .category-card {
+    padding: 24px;
+  }
+
+  /* Grid de productos: auto-fill (3 en catálogo, 4 en home) */
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 32px;
+  }
+
+  /* Showcase: 2 columnas */
+  .showcase {
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+  }
+
+  /* Testimonios: flechas fuera del viewport */
+  .testimonial-arrow.prev {
+    left: -24px;
+  }
+
+  .testimonial-arrow.next {
+    right: -24px;
+  }
+
+  .testimonial-slide {
+    padding: 48px 32px;
+  }
+
+  /* Newsletter: formulario en fila */
+  .newsletter__inner {
+    padding: 64px 48px;
+  }
+
+  .newsletter-form {
+    flex-direction: row;
+  }
+
+  .newsletter-form .btn {
+    width: auto;
+  }
+
+  /* Footer: 4 columnas */
+  .footer-grid {
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 48px;
+  }
+
+  .footer-bottom {
+    flex-direction: row;
+    text-align: left;
+  }
+
+  /* Detalle de producto: 2 columnas */
+  .product-detail {
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    padding-block: 48px;
+  }
+
+  .product-title {
+    font-size: var(--fs-2xl);
+  }
+
+  .gallery-thumbs .thumb {
+    width: 80px;
+    height: 80px;
+  }
+
+  .detail-actions .btn {
+    flex: none;
+  }
+
+  .tabs {
+    margin-top: 64px;
+  }
+
+  .tab-list {
+    gap: 32px;
+  }
+
+  .modal {
+    padding: 48px 40px;
+  }
+
+  .toast {
+    bottom: 24px;
+  }
+
+  /* Catálogo: sidebar fijo visible */
+  .catalog-layout {
+    grid-template-columns: 280px 1fr;
+    gap: 48px;
+  }
+
+  .filters-sidebar {
+    position: sticky;
+    top: calc(var(--header-height) + 24px);
+    transform: none;
+    width: auto;
+    padding: 0;
+    overflow: visible;
+    box-shadow: none;
+    background: none;
+  }
+
+  .filters-sidebar > .icon-btn {
+    display: none;
+  }
+
+  .filters-overlay {
+    display: none;
+  }
+
+  .filters-toggle {
+    display: none;
+  }
+
+  /* Cards en modo lista: media completa */
+  .product-grid.list-view .product-card__media,
+  .product-card.product-list .product-card__media {
+    width: 240px;
+  }
+
+  .product-grid.list-view .product-card__body,
+  .product-card.product-list .product-card__body {
+    padding: 24px;
+  }
+
+  /* Timeline: altura completa */
+  .timeline {
+    height: 600px;
+  }
+}

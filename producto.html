@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoleStyle — Detalle de Producto</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/three-animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <header class="site-header" id="siteHeader">
+    <div class="site-header__inner container">
+      <a href="index.html" class="logo" aria-label="SoleStyle, inicio">Sole<span class="logo-accent">Style</span></a>
+      <nav class="main-nav" aria-label="Navegación principal">
+        <a href="index.html" class="nav-link">Inicio</a>
+        <a href="tienda.html" class="nav-link">Tienda</a>
+        <a href="index.html#colecciones" class="nav-link">Colecciones</a>
+        <a href="index.html#contacto" class="nav-link">Contacto</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" id="searchToggle" aria-label="Abrir buscador" aria-expanded="false"><i data-lucide="search"></i></button>
+        <a href="favoritos.html" class="icon-btn has-badge" id="favoritesLink" aria-label="Ver favoritos"><i data-lucide="heart"></i><span class="icon-btn__badge is-hidden" id="favoritesBadge">0</span></a>
+        <button class="icon-btn has-badge" id="cartButton" aria-label="Abrir carrito"><i data-lucide="shopping-cart"></i><span class="icon-btn__badge is-hidden" id="cartBadge">0</span></button>
+        <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <div class="search-box" id="searchBox">
+      <input type="search" id="searchInput" class="search-input" placeholder="Buscar zapatos, marcas..." aria-label="Buscar productos" autocomplete="off">
+      <div class="search-dropdown" id="searchDropdown" role="listbox" aria-label="Resultados de búsqueda"></div>
+    </div>
+    <nav class="mobile-menu" id="mobileMenu" aria-label="Menú móvil">
+      <a href="index.html" class="nav-link">Inicio</a>
+      <a href="tienda.html" class="nav-link">Tienda</a>
+      <a href="index.html#colecciones" class="nav-link">Colecciones</a>
+      <a href="index.html#contacto" class="nav-link">Contacto</a>
+      <a href="favoritos.html" class="nav-link">Favoritos</a>
+    </nav>
+  </header>
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Carrito de compras">
+    <div class="cart-drawer__header"><h2 class="cart-drawer__title">Tu carrito</h2><button class="cart-close icon-btn" id="cartClose" aria-label="Cerrar carrito"><i data-lucide="x"></i></button></div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-empty is-hidden" id="cartEmpty"><i data-lucide="shopping-bag" class="cart-empty__icon"></i><p>Tu carrito está vacío</p><a href="tienda.html" class="btn btn-outline">Ir a la tienda</a></div>
+    <div class="cart-summary" id="cartSummary">
+      <div class="coupon-row"><input type="text" class="coupon-input" id="couponInput" placeholder="Cupón (SOLE10 / WELCOME)" aria-label="Código de cupón"><button class="btn btn-outline btn-sm" id="couponApply">Aplicar</button></div>
+      <p class="coupon-msg" id="couponMsg"></p>
+      <div class="summary-row"><span>Subtotal</span><span id="cartSubtotal">$0</span></div>
+      <div class="summary-row"><span>Envío</span><span id="cartShipping">—</span></div>
+      <div class="summary-row summary-row--total"><span>Total</span><span id="cartTotal">$0</span></div>
+      <button class="btn btn-primary btn-block checkout-btn" id="checkoutBtn">Finalizar Compra</button>
+    </div>
+  </aside>
+  <div class="modal-overlay" id="checkoutModal" role="dialog" aria-modal="true" aria-label="Compra completada">
+    <div class="modal"><div class="modal__icon"><i data-lucide="check"></i></div><h3 class="modal__title">¡Gracias por tu compra!</h3><p class="modal__text" id="modalText">Tu pedido ha sido procesado. Te contactaremos por email.</p><div class="modal__actions"><button class="btn btn-primary" id="modalClose">Seguir comprando</button></div></div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <main>
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Ruta de navegación">
+        <a href="index.html">Inicio</a>
+        <span aria-hidden="true">›</span>
+        <a href="tienda.html">Tienda</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">Producto</span>
+      </nav>
+      <div class="product-detail">
+        <div class="gallery">
+          <div class="gallery-main">
+            <img class="gallery-main__img" id="galleryMainImg" alt="Imagen del producto">
+          </div>
+          <div class="gallery-thumbs" id="galleryThumbs"></div>
+        </div>
+        <div class="product-info">
+          <p class="product-brand" id="productBrand"></p>
+          <h1 class="product-title" id="productName"></h1>
+          <div class="product-rating" id="productRating"></div>
+          <div class="product-price" id="productPrice">
+            <span class="price-new" id="priceNew"></span>
+            <span class="price-old" id="priceOld"></span>
+            <span class="save-badge" id="saveBadge"></span>
+          </div>
+          <p class="product-description" id="productDescription"></p>
+          <span class="variant-label">Talla</span>
+          <div class="size-selector" id="sizeSelector"></div>
+          <span class="variant-label">Color</span>
+          <div class="color-swatches" id="colorSelector"></div>
+          <div class="qty-input">
+            <button class="qty-btn" id="qtyMinus" aria-label="Disminuir cantidad"><i data-lucide="minus"></i></button>
+            <input type="number" id="qtyInput" min="1" max="10" value="1" aria-label="Cantidad">
+            <button class="qty-btn" id="qtyPlus" aria-label="Aumentar cantidad"><i data-lucide="plus"></i></button>
+          </div>
+          <div class="detail-actions">
+            <button class="btn btn-primary btn-lg" id="addToCartBtn">Añadir al carrito</button>
+            <button class="btn btn-outline btn-lg" id="favoriteBtn">Guardar en favoritos</button>
+          </div>
+        </div>
+      </div>
+      <div class="tabs">
+        <div class="tab-list" role="tablist" aria-label="Información del producto">
+          <button class="tab-btn is-active" role="tab" data-tab="description" aria-selected="true">Descripción</button>
+          <button class="tab-btn" role="tab" data-tab="specs" aria-selected="false">Especificaciones</button>
+          <button class="tab-btn" role="tab" data-tab="reviews" aria-selected="false">Opiniones</button>
+        </div>
+        <div class="tab-panel is-active" id="tabDescription" role="tabpanel"></div>
+        <div class="tab-panel" id="tabSpecs" role="tabpanel"></div>
+        <div class="tab-panel" id="tabReviews" role="tabpanel"></div>
+      </div>
+      <section class="section" aria-labelledby="relatedTitle">
+        <div class="section-head">
+          <h2 class="section-title" id="relatedTitle">También te puede gustar</h2>
+        </div>
+        <div class="product-grid" id="relatedGrid"></div>
+      </section>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <canvas class="footer-waves" id="footerWaves" aria-hidden="true"></canvas>
+    <div class="site-footer__content container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="index.html" class="logo" aria-label="SoleStyle, inicio">Sole<span class="logo-accent">Style</span></a>
+          <p>Calzado premium con tecnología, diseño y comodidad en cada paso.</p>
+          <div class="footer-social">
+<a href="#" class="footer-social__link" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+  <a href="#" class="footer-social__link" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+  <a href="#" class="footer-social__link" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-title">Tienda</h3>
+          <a href="tienda.html?category=running" class="footer-link">Running</a>
+          <a href="tienda.html?category=casual" class="footer-link">Casual</a>
+          <a href="tienda.html?category=formal" class="footer-link">Formal</a>
+          <a href="tienda.html?category=outdoor" class="footer-link">Outdoor</a>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-title">Ayuda</h3>
+          <a href="#" class="footer-link">Envíos</a>
+          <a href="#" class="footer-link">Devoluciones</a>
+          <a href="#" class="footer-link">Tallas</a>
+          <a href="#" class="footer-link">Contacto</a>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-title">Pagos</h3>
+          <div class="payment-badges">
+            <span class="payment-badge">Visa</span>
+            <span class="payment-badge">Mastercard</span>
+            <span class="payment-badge">Amex</span>
+            <span class="payment-badge">PayPal</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 SoleStyle. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script type="module" src="js/main.js" data-page="producto"></script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoleStyle — Tienda</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/three-animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <header class="site-header" id="siteHeader">
+    <div class="site-header__inner container">
+      <a href="index.html" class="logo" aria-label="SoleStyle, inicio">Sole<span class="logo-accent">Style</span></a>
+      <nav class="main-nav" aria-label="Navegación principal">
+        <a href="index.html" class="nav-link">Inicio</a>
+        <a href="tienda.html" class="nav-link">Tienda</a>
+        <a href="index.html#colecciones" class="nav-link">Colecciones</a>
+        <a href="index.html#contacto" class="nav-link">Contacto</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" id="searchToggle" aria-label="Abrir buscador" aria-expanded="false"><i data-lucide="search"></i></button>
+        <a href="favoritos.html" class="icon-btn has-badge" id="favoritesLink" aria-label="Ver favoritos"><i data-lucide="heart"></i><span class="icon-btn__badge is-hidden" id="favoritesBadge">0</span></a>
+        <button class="icon-btn has-badge" id="cartButton" aria-label="Abrir carrito"><i data-lucide="shopping-cart"></i><span class="icon-btn__badge is-hidden" id="cartBadge">0</span></button>
+        <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <div class="search-box" id="searchBox">
+      <input type="search" id="searchInput" class="search-input" placeholder="Buscar zapatos, marcas..." aria-label="Buscar productos" autocomplete="off">
+      <div class="search-dropdown" id="searchDropdown" role="listbox" aria-label="Resultados de búsqueda"></div>
+    </div>
+    <nav class="mobile-menu" id="mobileMenu" aria-label="Menú móvil">
+      <a href="index.html" class="nav-link">Inicio</a>
+      <a href="tienda.html" class="nav-link">Tienda</a>
+      <a href="index.html#colecciones" class="nav-link">Colecciones</a>
+      <a href="index.html#contacto" class="nav-link">Contacto</a>
+      <a href="favoritos.html" class="nav-link">Favoritos</a>
+    </nav>
+  </header>
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Carrito de compras">
+    <div class="cart-drawer__header"><h2 class="cart-drawer__title">Tu carrito</h2><button class="cart-close icon-btn" id="cartClose" aria-label="Cerrar carrito"><i data-lucide="x"></i></button></div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-empty is-hidden" id="cartEmpty"><i data-lucide="shopping-bag" class="cart-empty__icon"></i><p>Tu carrito está vacío</p><a href="tienda.html" class="btn btn-outline">Ir a la tienda</a></div>
+    <div class="cart-summary" id="cartSummary">
+      <div class="coupon-row"><input type="text" class="coupon-input" id="couponInput" placeholder="Cupón (SOLE10 / WELCOME)" aria-label="Código de cupón"><button class="btn btn-outline btn-sm" id="couponApply">Aplicar</button></div>
+      <p class="coupon-msg" id="couponMsg"></p>
+      <div class="summary-row"><span>Subtotal</span><span id="cartSubtotal">$0</span></div>
+      <div class="summary-row"><span>Envío</span><span id="cartShipping">—</span></div>
+      <div class="summary-row summary-row--total"><span>Total</span><span id="cartTotal">$0</span></div>
+      <button class="btn btn-primary btn-block checkout-btn" id="checkoutBtn">Finalizar Compra</button>
+    </div>
+  </aside>
+  <div class="modal-overlay" id="checkoutModal" role="dialog" aria-modal="true" aria-label="Compra completada">
+    <div class="modal"><div class="modal__icon"><i data-lucide="check"></i></div><h3 class="modal__title">¡Gracias por tu compra!</h3><p class="modal__text" id="modalText">Tu pedido ha sido procesado. Te contactaremos por email.</p><div class="modal__actions"><button class="btn btn-primary" id="modalClose">Seguir comprando</button></div></div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <main>
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Ruta de navegación">
+        <a href="index.html">Inicio</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">Tienda</span>
+      </nav>
+      <h1 class="section-title">Tienda</h1>
+      <div class="active-filters" id="activeFilters"></div>
+      <button class="filters-toggle" id="filtersToggle" aria-expanded="false"><i data-lucide="sliders-horizontal"></i> Filtros</button>
+      <div class="filters-overlay" id="filtersOverlay"></div>
+      <div class="catalog-layout">
+        <aside class="filters-sidebar" id="filtersSidebar" aria-label="Filtros">
+          <div class="filters-sidebar__header">
+            <h2 class="filter-title">Filtros</h2>
+            <button class="icon-btn" id="filtersClose" aria-label="Cerrar filtros"><i data-lucide="x"></i></button>
+          </div>
+          <div class="filter-group">
+            <h3 class="filter-title">Categorías</h3>
+            <label class="filter-option"><input type="checkbox" data-filter="category" data-value="running"> Running</label>
+            <label class="filter-option"><input type="checkbox" data-filter="category" data-value="casual"> Casual</label>
+            <label class="filter-option"><input type="checkbox" data-filter="category" data-value="formal"> Formal</label>
+            <label class="filter-option"><input type="checkbox" data-filter="category" data-value="deportivo"> Deportivo</label>
+            <label class="filter-option"><input type="checkbox" data-filter="category" data-value="lifestyle"> Lifestyle</label>
+            <label class="filter-option"><input type="checkbox" data-filter="category" data-value="outdoor"> Outdoor</label>
+          </div>
+          <div class="filter-group">
+            <h3 class="filter-title">Precio</h3>
+            <div class="range-inputs">
+              <input type="range" class="range-input" id="priceMin" min="0" max="6000" step="100" value="0" aria-label="Precio mínimo">
+              <input type="range" class="range-input" id="priceMax" min="0" max="6000" step="100" value="6000" aria-label="Precio máximo">
+            </div>
+            <div class="range-values">
+              <span id="priceMinVal">$0</span>
+              <span id="priceMaxVal">$6,000</span>
+            </div>
+          </div>
+          <div class="filter-group">
+            <h3 class="filter-title">Marca</h3>
+            <select class="brand-select" id="brandFilter" aria-label="Filtrar por marca">
+              <option value="">Todas</option>
+              <option value="Nike">Nike</option>
+              <option value="Adidas">Adidas</option>
+              <option value="Puma">Puma</option>
+              <option value="New Balance">New Balance</option>
+              <option value="Reebok">Reebok</option>
+              <option value="Converse">Converse</option>
+              <option value="Vans">Vans</option>
+              <option value="ASICS">ASICS</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <h3 class="filter-title">Talla</h3>
+            <div class="size-chips">
+              <button class="chip" data-size="35" aria-pressed="false">35</button>
+              <button class="chip" data-size="36" aria-pressed="false">36</button>
+              <button class="chip" data-size="37" aria-pressed="false">37</button>
+              <button class="chip" data-size="38" aria-pressed="false">38</button>
+              <button class="chip" data-size="39" aria-pressed="false">39</button>
+              <button class="chip" data-size="40" aria-pressed="false">40</button>
+              <button class="chip" data-size="41" aria-pressed="false">41</button>
+              <button class="chip" data-size="42" aria-pressed="false">42</button>
+              <button class="chip" data-size="43" aria-pressed="false">43</button>
+              <button class="chip" data-size="44" aria-pressed="false">44</button>
+              <button class="chip" data-size="45" aria-pressed="false">45</button>
+            </div>
+          </div>
+          <div class="filter-group">
+            <h3 class="filter-title">Color</h3>
+            <div class="color-swatches">
+              <button class="swatch" data-color-name="Negro" data-hex="#1A1A1A" aria-label="Negro" style="background-color:#1A1A1A"></button>
+              <button class="swatch" data-color-name="Blanco" data-hex="#FFFFFF" aria-label="Blanco" style="background-color:#FFFFFF"></button>
+              <button class="swatch" data-color-name="Gris" data-hex="#6B6B6B" aria-label="Gris" style="background-color:#6B6B6B"></button>
+              <button class="swatch" data-color-name="Naranja" data-hex="#FF6B35" aria-label="Naranja" style="background-color:#FF6B35"></button>
+              <button class="swatch" data-color-name="Azul" data-hex="#1E3A8A" aria-label="Azul" style="background-color:#1E3A8A"></button>
+              <button class="swatch" data-color-name="Rojo" data-hex="#B91C1C" aria-label="Rojo" style="background-color:#B91C1C"></button>
+              <button class="swatch" data-color-name="Verde" data-hex="#166534" aria-label="Verde" style="background-color:#166534"></button>
+              <button class="swatch" data-color-name="Beige" data-hex="#D6C7A9" aria-label="Beige" style="background-color:#D6C7A9"></button>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm btn-block" id="clearFilters">Limpiar filtros</button>
+        </aside>
+        <div class="catalog-main">
+          <div class="catalog-toolbar">
+            <p class="results-count" id="resultsCount"></p>
+            <select class="sort-select" id="sortSelect" aria-label="Ordenar">
+              <option value="relevance">Relevancia</option>
+              <option value="price-asc">Precio: menor a mayor</option>
+              <option value="price-desc">Precio: mayor a menor</option>
+              <option value="newest">Novedades</option>
+            </select>
+            <div class="view-toggle">
+              <button class="view-btn is-active" id="gridViewBtn" aria-label="Vista cuadrícula"><i data-lucide="layout-grid"></i></button>
+              <button class="view-btn" id="listViewBtn" aria-label="Vista lista"><i data-lucide="list"></i></button>
+            </div>
+          </div>
+          <div class="product-grid" id="productGrid"></div>
+          <nav class="pagination" id="pagination" aria-label="Paginación"></nav>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <canvas class="footer-waves" id="footerWaves" aria-hidden="true"></canvas>
+    <div class="site-footer__content container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="index.html" class="logo" aria-label="SoleStyle, inicio">Sole<span class="logo-accent">Style</span></a>
+          <p>Calzado premium con tecnología, diseño y comodidad en cada paso.</p>
+          <div class="footer-social">
+<a href="#" class="footer-social__link" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+  <a href="#" class="footer-social__link" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+  <a href="#" class="footer-social__link" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-title">Tienda</h3>
+          <a href="tienda.html?category=running" class="footer-link">Running</a>
+          <a href="tienda.html?category=casual" class="footer-link">Casual</a>
+          <a href="tienda.html?category=formal" class="footer-link">Formal</a>
+          <a href="tienda.html?category=outdoor" class="footer-link">Outdoor</a>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-title">Ayuda</h3>
+          <a href="#" class="footer-link">Envíos</a>
+          <a href="#" class="footer-link">Devoluciones</a>
+          <a href="#" class="footer-link">Tallas</a>
+          <a href="#" class="footer-link">Contacto</a>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-title">Pagos</h3>
+          <div class="payment-badges">
+            <span class="payment-badge">Visa</span>
+            <span class="payment-badge">Mastercard</span>
+            <span class="payment-badge">Amex</span>
+            <span class="payment-badge">PayPal</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 SoleStyle. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script type="module" src="js/main.js" data-page="tienda"></script>
+</body>
+</html>

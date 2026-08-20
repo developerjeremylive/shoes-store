@@ -1,0 +1,179 @@
+/* ============================================================
+   SoleStyle — Base (tipografía, layout, utilidades)
+   ============================================================ */
+
+/* Tipografía base del documento */
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  font-weight: 400;
+  color: var(--color-dark);
+  background-color: var(--color-white);
+  overflow-x: hidden;
+}
+
+/* Contenedor central: ancho máximo con padding lateral fluido */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: clamp(20px, 4vw, 40px);
+}
+
+/* Sección: espaciado vertical generoso (60px en móvil, 120px en desktop) */
+.section {
+  padding-block: var(--space-section);
+}
+
+/* Variante de sección con fondo gris claro */
+.section--alt {
+  background-color: var(--color-gray-100);
+}
+
+/* Cabecera de sección: centrada con margen inferior */
+.section-head {
+  max-width: 640px;
+  margin: 0 auto 56px;
+  text-align: center;
+}
+
+/* Título de sección: display serif, peso 700 */
+.section-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+}
+
+/* Subtítulo de sección: gris, tamaño medio */
+.section-subtitle {
+  font-size: var(--fs-md);
+  color: var(--color-gray-600);
+  line-height: 1.6;
+}
+
+/* Eyebrow: etiqueta naranja uppercase con tracking */
+.eyebrow {
+  display: inline-block;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 16px;
+}
+
+/* Encabezados: jerarquía tipográfica */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-dark);
+}
+
+/* Enlaces: color heredado con transición suave */
+a {
+  transition: color var(--transition-fast);
+}
+
+/* Enlaces interactivos: hover con acento */
+a:hover {
+  color: var(--color-accent);
+}
+
+/* Párrafos: margen inferior consistente */
+p {
+  margin-bottom: 1rem;
+}
+
+/* Foco visible accesible: anillo naranja en todos los elementos interactivos */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Utilidad: contenido solo para lectores de pantalla */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Utilidad: ocultar elemento (JS alterna esta clase) */
+.is-hidden {
+  display: none !important;
+}
+
+/* Utilidad: animación de entrada (GSAP la anima desde opacity 0) */
+.fade-up {
+  opacity: 0;
+}
+
+/* Reducción de movimiento: desactiva animaciones y transiciones */
+.reduce-motion * {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+/* Bloqueo de scroll del body (drawer/menú abiertos) */
+body.no-scroll {
+  overflow: hidden;
+}
+
+/* Imágenes de producto: fondo neutro mientras cargan */
+img {
+  background-color: var(--color-gray-100);
+}
+
+/* Breadcrumb: migas de pan con separador */
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-sm);
+  color: var(--color-gray-600);
+  padding-block: 20px;
+}
+
+/* Separador de breadcrumb (chevron) */
+.breadcrumb a {
+  color: var(--color-gray-600);
+}
+
+.breadcrumb a:hover {
+  color: var(--color-accent);
+}
+
+.breadcrumb span[aria-hidden='true'] {
+  color: var(--color-gray-400);
+}
+
+/* Estado vacío: centrado con icono grande */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.empty-state i {
+  width: 64px;
+  height: 64px;
+  color: var(--color-gray-400);
+  margin-bottom: 24px;
+}
+
+.empty-state p {
+  font-size: var(--fs-lg);
+  color: var(--color-gray-600);
+  margin-bottom: 24px;
+}

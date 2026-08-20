@@ -1,0 +1,144 @@
+/* ============================================================
+   SoleStyle — Reset moderno mínimo
+   ============================================================ */
+
+/* Box-sizing global: border-box en todo, herencia para elementos anidados */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Base del documento: altura completa y antialiasing */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+/* Body: altura mínima de viewport y tipografía heredable */
+body {
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Imágenes y medios: nunca desbordan su contenedor */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Imágenes dentro de enlaces: sin borde fantasma */
+img {
+  border-style: none;
+}
+
+/* Formularios: heredan tipografía y color del documento */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Botones: sin fondo/borde por defecto, cursor pointer */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Enlaces: sin subrayado por defecto (se define en base.css) */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Listas: sin viñetas por defecto */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Tablas: colapso de bordes consistente */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Elementos de bloque semánticos: display por defecto */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section {
+  display: block;
+}
+
+/* Inputs de rango y número: reset de apariencia nativa */
+input[type='range'] {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Quitar spinners de inputs numéricos (WebKit/Gecko) */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Placeholder: color neutro consistente */
+::placeholder {
+  color: var(--color-gray-400);
+  opacity: 1;
+}
+
+/* Selección de texto: acento de marca */
+::selection {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+/* Scrollbar sutil (WebKit) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-gray-400);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-600);
+}
