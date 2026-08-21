@@ -115,12 +115,12 @@ function initTimelineReveals() {
       opacity: 0,
       x: i % 2 === 0 ? -30 : 30,
       duration: 0.5,
-      delay: i * 0.1,
       ease: 'power2.out',
       scrollTrigger: {
-        trigger: ms,
-        start: 'top 90%',
-        once: true
+        trigger: timeline,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        toggleActions: 'play none none reverse'
       }
     });
   });
@@ -134,7 +134,7 @@ function initTimelineReveals() {
       ease: 'power2.out',
       scrollTrigger: {
         trigger: timelineTitle,
-        start: 'top 95%',
+        start: 'top 90%',
         once: true
       }
     });
@@ -215,29 +215,27 @@ function initHeroIntro() {
   const heroCta = qs('.hero-cta');
   const heroEyebrow = qs('.hero .eyebrow');
   const heroScrollHint = qs('.hero-scroll-hint');
+  const heroImage = qs('.hero-image');
+  const heroStats = qs('.hero-stats');
 
   if (!hero) return;
 
-  // Elementos a animar con estado inicial oculto.
-  const animElements = [heroEyebrow, heroTitle, heroSubtitle, heroCta, heroScrollHint].filter(Boolean);
+  const animElements = [heroEyebrow, heroTitle, heroSubtitle, heroCta, heroStats, heroImage, heroScrollHint].filter(Boolean);
 
-  // Establecer estado inicial: invisibles.
   animElements.forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(40px)';
   });
 
-  // Animar cuando la sección hero sea visible.
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        // Hero visible → animar inmediatamente.
         animElements.forEach((el, i) => {
           gsap.to(el, {
             opacity: 1,
             y: 0,
             duration: 0.8,
-            delay: i * 0.15,
+            delay: i * 0.12,
             ease: 'power2.out'
           });
         });

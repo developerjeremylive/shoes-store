@@ -7,9 +7,13 @@ body {
   font-family: var(--font-body);
   font-size: var(--fs-base);
   font-weight: 400;
+  line-height: var(--lh-normal, 1.5);
   color: var(--color-dark);
-  background-color: var(--color-white);
+  background-color: var(--color-bg, var(--color-white));
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* Contenedor central: ancho máximo con padding lateral fluido */
@@ -18,16 +22,18 @@ body {
   max-width: var(--container-max);
   margin-inline: auto;
   padding-inline: clamp(20px, 4vw, 40px);
+  overflow: visible;
 }
 
 /* Sección: espaciado vertical generoso (60px en móvil, 120px en desktop) */
 .section {
   padding-block: var(--space-section);
+  overflow: visible;
 }
 
-/* Variante de sección con fondo gris claro */
+/* Variante de sección con fondo alternado */
 .section--alt {
-  background-color: var(--color-gray-100);
+  background-color: var(--color-surface-alt, var(--color-gray-100));
 }
 
 /* Cabecera de sección: centrada con margen inferior */
@@ -42,16 +48,17 @@ body {
   font-family: var(--font-display);
   font-size: var(--fs-2xl);
   font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  line-height: var(--lh-tight, 1.15);
+  letter-spacing: -0.02em;
+  color: var(--color-dark);
   margin-bottom: 16px;
 }
 
-/* Subtítulo de sección: gris, tamaño medio */
+/* Subtítulo de sección: secundario, tamaño medio */
 .section-subtitle {
   font-size: var(--fs-md);
   color: var(--color-gray-600);
-  line-height: 1.6;
+  line-height: var(--lh-relaxed, 1.6);
 }
 
 /* Eyebrow: etiqueta naranja uppercase con tracking */
@@ -69,7 +76,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: var(--lh-tight, 1.15);
   color: var(--color-dark);
 }
 
@@ -93,6 +100,12 @@ p {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
   border-radius: 2px;
+}
+
+/* Selección de texto: fondo acento suave */
+::selection {
+  background-color: rgba(255, 107, 53, 0.2);
+  color: inherit;
 }
 
 /* Utilidad: contenido solo para lectores de pantalla */
@@ -130,9 +143,14 @@ body.no-scroll {
   overflow: hidden;
 }
 
-/* Imágenes de producto: fondo neutro mientras cargan */
+/* Imágenes: fondo neutro mientras cargan */
 img {
   background-color: var(--color-gray-100);
+}
+
+/* Separador sutil entre secciones */
+.section + .section {
+  border-top: 1px solid var(--color-border-subtle, transparent);
 }
 
 /* Breadcrumb: migas de pan con separador */

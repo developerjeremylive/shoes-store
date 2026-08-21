@@ -2,13 +2,6 @@
    SoleStyle — Escenas Three.js (tamaños de canvas y fallbacks)
    ============================================================ */
 
-/* Canvas del hero: absoluto, llena la sección (z -1 en components) */
-.hero-canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
 /* Contenedor del cubo de categoría: canvas llena el div */
 .category-cube canvas {
   display: block;
@@ -29,10 +22,9 @@
   height: 100%;
 }
 
-/* Canvas de la línea del timeline: altura completa de la sección */
+/* Canvas de la línea del timeline: mantener ancho fijo de components.css */
 .timeline-canvas {
   display: block;
-  width: 100%;
   height: 100%;
 }
 
@@ -47,17 +39,6 @@
    Movimiento reducido: fallback estático elegante
    ============================================================ */
 
-/* Sin animaciones: el hero conserva su gradiente de fondo */
-.reduce-motion .hero-canvas {
-  display: none;
-}
-
-/* El título vuelve a blend normal para legibilidad sobre el gradiente */
-.reduce-motion .hero-title {
-  mix-blend-mode: normal;
-}
-
-/* Cubos de categoría: se ocultan, la tarjeta conserva su fondo gris */
 .reduce-motion .category-cube canvas {
   display: none;
 }

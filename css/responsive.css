@@ -35,7 +35,12 @@
   margin-bottom: 40px;
 }
 
-/* Hero: título y subtítulo reducidos */
+.hero .hero-content {
+  grid-template-columns: 1fr;
+  gap: 32px;
+  padding-block: 60px;
+}
+
 .hero-title {
   font-size: var(--fs-2xl);
 }
@@ -44,12 +49,27 @@
   font-size: var(--fs-base);
 }
 
-.hero-content {
-  padding-block: 60px;
+.hero-image {
+  order: -1;
+}
+
+.hero-image__img {
+  max-width: 360px;
+}
+
+.hero-image__glow {
+  width: 200px;
+  height: 200px;
 }
 
 .hero-cta {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
+}
+
+.hero-stats {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .hero-scroll-hint {
@@ -72,9 +92,83 @@
   gap: 40px;
 }
 
-/* Timeline: altura reducida */
+/* Timeline mobile: línea centrada, milestones alternando lados */
 .timeline {
-  height: 480px;
+  height: auto;
+  min-height: 700px;
+  padding: 0 8px;
+}
+
+.timeline-canvas {
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+}
+
+.timeline-milestone {
+  width: calc(50% - 28px) !important;
+}
+
+.timeline-milestone:nth-child(odd) {
+  left: 0 !important;
+  right: auto !important;
+  align-items: flex-end !important;
+  text-align: right !important;
+  padding-right: 16px !important;
+  padding-left: 0 !important;
+}
+
+.timeline-milestone:nth-child(even) {
+  right: 0 !important;
+  left: auto !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+  padding-left: 16px !important;
+  padding-right: 0 !important;
+}
+
+.timeline-milestone__dot {
+  width: 12px;
+  height: 12px;
+}
+
+.timeline-milestone:nth-child(odd) .timeline-milestone__dot {
+  left: calc(100% + 20px) !important;
+  right: auto !important;
+}
+
+.timeline-milestone:nth-child(even) .timeline-milestone__dot {
+  left: -28px !important;
+  right: auto !important;
+}
+
+.timeline-milestone.is-active .timeline-milestone__dot {
+  transform: translateX(0) scale(1.15) !important;
+}
+
+.timeline-milestone__title {
+  font-size: 13px !important;
+  max-width: 130px !important;
+}
+
+.timeline-milestone:nth-child(odd) .timeline-milestone__title {
+  margin-left: auto !important;
+}
+
+.timeline-milestone__popup {
+  width: 160px !important;
+  padding: 10px !important;
+  font-size: 11px !important;
+}
+
+.timeline-milestone:nth-child(odd) .timeline-milestone__popup {
+  right: 0 !important;
+  left: auto !important;
+}
+
+.timeline-milestone:nth-child(even) .timeline-milestone__popup {
+  left: 0 !important;
+  right: auto !important;
 }
 
 /* Testimonios: flechas dentro del viewport */
@@ -454,5 +548,22 @@
   /* Timeline: altura completa */
   .timeline {
     height: 600px;
+  }
+
+  /* Timeline desktop: milestones más alejados del centro */
+  .timeline-canvas {
+    width: 240px;
+  }
+
+  .timeline-milestone {
+    width: calc(50% - 160px) !important;
+  }
+
+  .timeline-milestone:nth-child(odd) .timeline-milestone__dot {
+    left: calc(100% + 160px) !important;
+  }
+
+  .timeline-milestone:nth-child(even) .timeline-milestone__dot {
+    left: -160px !important;
   }
 }

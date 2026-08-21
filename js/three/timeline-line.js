@@ -6,12 +6,12 @@
 
 // Datos de los 6 hitos: año, título y texto corto del popup.
 const MILESTONES = [
-  { year: '2016', title: 'Nace SoleStyle', text: 'Fundamos SoleStyle con una idea clara: calzado premium accesible para todos.' },
-  { year: '2018', title: 'Primera tienda física', text: 'Abrimos nuestra primera tienda en el corazón de la ciudad.' },
-  { year: '2020', title: 'Colección Running Pro', text: 'Lanzamos la colección Running Pro con amortiguación de diseño propio.' },
-  { year: '2022', title: '100,000 clientes', text: 'Superamos los 100,000 clientes en toda la región.' },
-  { year: '2024', title: 'Expansión internacional', text: 'Llevamos SoleStyle a nuevos mercados internacionales.' },
-  { year: '2026', title: 'SoleStyle 3D', text: 'Presentamos SoleStyle 3D: diseño y prueba de calzado en tres dimensiones.' }
+  { year: '2016', title: 'Nace SoleStyle', text: 'Un pequeño taller, una gran visión: calzado premium accesible para todos.' },
+  { year: '2018', title: 'Primera tienda', text: 'Abrimos nuestras puertas en el corazón de la ciudad para conectar con nuestra comunidad.' },
+  { year: '2020', title: 'Running Pro', text: 'Lanzamos nuestra primera colección con amortiguación de diseño propio.' },
+  { year: '2022', title: '100K clientes', text: 'Superamos los 100,000 clientes en toda la región, creciendo de forma orgánica.' },
+  { year: '2024', title: 'Internacional', text: 'Llevamos SoleStyle a nuevos mercados con adaptaciones regionales.' },
+  { year: '2026', title: 'SoleStyle 3D', text: 'Diseño y prueba de calzado personalizado en tres dimensiones.' }
 ];
 
 // Crea un elemento DOM con clase y contenido HTML opcional.
@@ -38,12 +38,8 @@ function createMilestones(section) {
   const n = MILESTONES.length;
   MILESTONES.forEach((m, i) => {
     const el = createEl('div', 'timeline-milestone');
-    el.style.position = 'absolute';
     el.style.top = (i / (n - 1) * 100) + '%';
-    if (i % 2 === 0) el.style.left = '0';
-    else el.style.right = '0';
     el.appendChild(createEl('span', 'timeline-milestone__dot'));
-    el.appendChild(createEl('span', 'timeline-milestone__year', m.year));
     el.appendChild(createEl('h3', 'timeline-milestone__title', m.title));
     const popup = createEl('div', 'timeline-milestone__popup');
     popup.appendChild(createEl('span', 'timeline-milestone__year', m.year));

@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SoleStyle — Detalle de Producto</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <style>@media(prefers-color-scheme:dark){html{background:#0A0A0F;color:#E8E8EC;color-scheme:dark}}[data-theme="dark"]{--color-white:#0F0F12;--color-dark:#E8E8EC;--color-bg:#0A0A0F;--color-surface:#141418;--color-surface-alt:#1C1C22;--color-surface-raised:#222228;--color-border:rgba(255,255,255,.08);--color-border-subtle:rgba(255,255,255,.04);--color-border-accent:rgba(255,107,53,.25);--color-text-primary:#F0F0F4;--color-text-secondary:#A0A0B0;--color-text-muted:#6B6B78;--color-gray-100:#1C1C22;--color-gray-200:#242428;--color-gray-300:#2C2C32;--color-gray-400:#3A3A42;--color-gray-500:#6B6B78;--color-gray-600:#A0A0B0;--color-accent-soft:rgba(255,107,53,.12);--shadow-xs:0 1px 2px rgba(0,0,0,.3);--shadow-sm:0 1px 3px rgba(0,0,0,.4),0 1px 2px rgba(0,0,0,.3);--shadow-card:0 4px 16px rgba(0,0,0,.4),0 1px 4px rgba(0,0,0,.3);--shadow-hover:0 12px 32px rgba(0,0,0,.5),0 4px 8px rgba(0,0,0,.3);--shadow-accent:0 8px 24px rgba(255,107,53,.25);--shadow-accent-lg:0 12px 32px rgba(255,107,53,.35);--shadow-glow:0 0 24px rgba(255,107,53,.2);background:#0A0A0F!important;color:#E8E8EC!important;color-scheme:dark}[data-theme="dark"] body{background:#0A0A0F!important}[data-theme="dark"] .site-header{background:rgba(15,15,18,.88)!important;border-bottom-color:rgba(255,255,255,.06);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2)}[data-theme="dark"] .hero{background:linear-gradient(135deg,#0A0A0F,#141418 40%,#0F0F12)!important}[data-theme="dark"] .section--alt{background-color:#141418!important}[data-theme="dark"] .newsletter__inner{background:linear-gradient(135deg,rgba(255,107,53,.10),#141418)!important;border-color:rgba(255,255,255,.06)}[data-theme="dark"] .site-footer{background:#08080C!important}[data-theme="dark"] .filters-sidebar{background:#141418!important}[data-theme="dark"] .cart-drawer{background:#141418!important}</style>
+  <script>(function(){var t=localStorage.getItem('solestyle_theme');var d=window.matchMedia('(prefers-color-scheme:dark)').matches;if(t==='dark'||(t===null&&d)){document.documentElement.setAttribute('data-theme','dark');document.documentElement.style.cssText='background:#0A0A0F!important;color:#E8E8EC!important;color-scheme:dark'}})();</script>
+  <link rel="stylesheet" href="css/features/loading.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
@@ -23,6 +26,14 @@
   <link rel="stylesheet" href="css/features/ux.css">
 </head>
 <body>
+  <div class="loading-overlay" id="loadingOverlay">
+    <canvas class="loading-canvas" id="loadingCanvas"></canvas>
+    <div class="loading-content">
+      <div class="loading-logo">Sole<span class="loading-logo-accent">Style</span></div>
+      <div class="loading-bar-track"><div class="loading-bar-fill"></div></div>
+    </div>
+  </div>
+
   <header class="site-header" id="siteHeader">
     <div class="site-header__inner container">
       <a href="index.html" class="logo" aria-label="SoleStyle, inicio">Sole<span class="logo-accent">Style</span></a>
@@ -175,6 +186,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="js/modules/loading.js"></script>
   <script type="module" src="js/main.js" data-page="producto"></script>
 </body>
 </html>

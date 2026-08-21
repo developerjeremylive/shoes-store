@@ -7,7 +7,6 @@ import { FilterSystem } from './modules/filters.js';
 import { GlobalSearch } from './modules/search.js';
 import { getParam } from './modules/router.js';
 import { getProductById, getFeaturedProducts, getRelatedProducts } from './data/products.js';
-import { initScene as initHeroScene } from './three/hero-scene.js';
 import { initScene as initCategoryCubes } from './three/category-cubes.js';
 import { initScene as initShowcase, setShowcaseColor } from './three/product-showcase.js';
 import { initScene as initTimeline } from './three/timeline-line.js';
@@ -29,9 +28,27 @@ if (reducedMotion) document.documentElement.classList.add('reduce-motion');
 
 // Contador de bloqueos de scroll del body (menú, drawer, sidebar).
 let bodyLockCount = 0;
+let bodyLockY = 0;
 function setBodyLock(locked) {
   bodyLockCount = Math.max(0, bodyLockCount + (locked ? 1 : -1));
-  document.body.style.overflow = bodyLockCount > 0 ? 'hidden' : '';
+  if (bodyLockCount > 0) {
+    bodyLockY = window.scrollY;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${bodyLockY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+  } else {
+    document.documentElement.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.paddingRight = '';
+    window.scrollTo(0, bodyLockY);
+  }
 }
 
 // ScrollManager: emite globalScroll con {scrollY, velocity} throttled por rAF.
@@ -214,7 +231,6 @@ document.addEventListener('click', (e) => {
 
 function initHome() {
   if (!reducedMotion) {
-    initHeroScene(qs('#heroCanvas'));
     initCategoryCubes(qsa('.category-cube'));
     initShowcase(qs('#showcaseCanvas'), { productId: 1 });
     initTimeline(qs('#timelineCanvas'));
