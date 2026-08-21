@@ -1,0 +1,288 @@
+/* checkout.css — Estilos para checkout multi-paso, barra envío gratis, cupón. */
+
+/* ---- BARRA DE PROGRESO ENVÍO ---- */
+.ck-shipping-progress {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-gray-300, #E0E0E0);
+}
+
+.ck-shipping-progress__text {
+  font-size: 0.85rem;
+  color: var(--color-gray-600, #6B6B6B);
+  margin-bottom: 0.5rem;
+}
+
+.ck-shipping-progress__text--success {
+  color: var(--color-success, #166534);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .ck-shipping-progress__text--success {
+  color: #4ade80;
+}
+
+.ck-shipping-progress__bar {
+  height: 6px;
+  background: var(--color-gray-300, #E0E0E0);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.ck-shipping-progress__fill {
+  height: 100%;
+  background: var(--color-accent, #FF6B35);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* ---- CUPÓN ---- */
+.ck-coupon {
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-gray-300, #E0E0E0);
+}
+
+.ck-coupon__form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ck-coupon__input {
+  flex: 1;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--color-gray-300, #E0E0E0);
+  border-radius: var(--radius-md, 8px);
+  font-size: 0.85rem;
+}
+
+.ck-coupon__input:focus {
+  outline: none;
+  border-color: var(--color-accent, #FF6B35);
+}
+
+.ck-coupon__msg {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.ck-coupon__msg--success {
+  color: var(--color-success, #166534);
+}
+
+.ck-coupon__msg--error {
+  color: var(--color-error, #B91C1C);
+}
+
+/* ---- MODAL CHECKOUT ---- */
+.ck-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 135;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.ck-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.ck-modal__content {
+  background: var(--color-white, #fff);
+  border-radius: var(--radius-lg, 12px);
+  width: 90%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .ck-modal__content {
+  background: var(--color-surface, #1A1A1A);
+}
+
+.ck-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-gray-300, #E0E0E0);
+}
+
+.ck-modal__header h2 {
+  font-size: 1.25rem;
+}
+
+.ck-modal__close {
+  background: none;
+  border: none;
+  font-size: 1.75rem;
+  cursor: pointer;
+  color: var(--color-gray-600, #6B6B6B);
+  line-height: 1;
+  padding: 0.25rem;
+}
+
+.ck-modal__close:hover {
+  color: var(--color-dark);
+}
+
+/* ---- PASOS ---- */
+.ck-modal__steps {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-gray-300, #E0E0E0);
+}
+
+.ck-step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--color-gray-500, #8A8A8A);
+}
+
+.ck-step--active {
+  color: var(--color-accent, #FF6B35);
+  font-weight: 600;
+}
+
+.ck-step--completed {
+  color: var(--color-success, #166534);
+}
+
+.ck-step__number {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-gray-300, #E0E0E0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.ck-step--active .ck-step__number {
+  background: var(--color-accent, #FF6B35);
+  color: #fff;
+}
+
+.ck-step--completed .ck-step__number {
+  background: var(--color-success, #166534);
+  color: #fff;
+}
+
+/* ---- FORMULARIO ---- */
+.ck-modal__body {
+  padding: 1.5rem;
+}
+
+.ck-form__group {
+  margin-bottom: 1rem;
+}
+
+.ck-form__label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+  color: var(--color-dark);
+}
+
+.ck-form__input {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--color-gray-300, #E0E0E0);
+  border-radius: var(--radius-md, 8px);
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease;
+}
+
+.ck-form__input:focus {
+  outline: none;
+  border-color: var(--color-accent, #FF6B35);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+}
+
+.ck-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* ---- REVISIÓN ---- */
+.ck-review h3 {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.ck-review__items {
+  border-bottom: 1px solid var(--color-gray-300, #E0E0E0);
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.ck-review-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  padding: 0.35rem 0;
+}
+
+.ck-review__row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  padding: 0.35rem 0;
+}
+
+.ck-review__row--discount {
+  color: var(--color-success, #166534);
+}
+
+.ck-review__row--total {
+  font-weight: 600;
+  font-size: 1.05rem;
+  border-top: 1px solid var(--color-gray-300, #E0E0E0);
+  padding-top: 0.75rem;
+  margin-top: 0.35rem;
+}
+
+/* ---- FOOTER ---- */
+.ck-modal__footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--color-gray-300, #E0E0E0);
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 480px) {
+  .ck-modal__content {
+    width: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .ck-form__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.reduce-motion .ck-shipping-progress__fill {
+  transition: none;
+}

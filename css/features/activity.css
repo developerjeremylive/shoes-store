@@ -1,0 +1,136 @@
+/* activity.css — Estilos para vistos recientemente y aviso de stock. */
+
+/* Sección de vistos recientemente */
+.act-recently {
+  padding: 4rem 0;
+}
+
+.act-recently .section-title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.act-recently .product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Contenedor del aviso de stock */
+.act-notify-container {
+  margin-top: 1rem;
+}
+
+/* Botón de aviso de stock */
+.act-notify {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-dark, #1A1A1A);
+  color: var(--color-white, #FFFFFF);
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.act-notify:hover {
+  background: var(--color-accent, #FF6B35);
+  transform: translateY(-1px);
+}
+
+.act-notify:focus-visible {
+  outline: 2px solid var(--color-accent, #FF6B35);
+  outline-offset: 2px;
+}
+
+/* Mini modal de notificación */
+.act-notify-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 110;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.act-notify-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.act-notify-modal__content {
+  background: var(--color-white, #FFFFFF);
+  border-radius: var(--radius-lg, 12px);
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.act-notify-modal__content h4 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.act-notify-modal__content p {
+  color: var(--color-gray-600, #6B6B6B);
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+}
+
+.act-notify-modal__form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.act-notify-input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid var(--color-gray-300, #E0E0E0);
+  border-radius: var(--radius-md, 8px);
+  font-size: 0.9rem;
+}
+
+.act-notify-input:focus {
+  outline: none;
+  border-color: var(--color-accent, #FF6B35);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+}
+
+.act-notify-submit {
+  white-space: nowrap;
+}
+
+.act-notify-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--color-gray-600, #6B6B6B);
+  line-height: 1;
+  padding: 0.25rem;
+}
+
+.act-notify-close:hover {
+  color: var(--color-dark, #1A1A1A);
+}
+
+/* Reduced motion */
+.reduce-motion .act-notify {
+  transition: none;
+}

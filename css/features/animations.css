@@ -1,0 +1,101 @@
+/* animations.css — Estilos para animaciones: marquee, stats, reveals, scroll progress. */
+
+/* ---- ANNOUNCEMENT BAR ---- */
+.an-announce {
+  background: var(--color-accent, #FF6B35);
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0.5rem 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.an-announce__track {
+  display: inline-flex;
+  animation: an-marquee 30s linear infinite;
+}
+
+.an-announce__text {
+  padding: 0 3rem;
+}
+
+@keyframes an-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.reduce-motion .an-announce__track {
+  animation: none;
+}
+
+.an-announce:hover .an-announce__track {
+  animation-play-state: paused;
+}
+
+/* ---- STATS SECTION ---- */
+.an-stats {
+  padding: 4rem 0;
+  background: var(--color-gray-100, #F8F9FA);
+}
+
+[data-theme="dark"] .an-stats {
+  background: var(--color-gray-200, #1A1A1A);
+}
+
+.an-stats__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  text-align: center;
+}
+
+.an-stats__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.an-stats__value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-accent, #FF6B35);
+  font-family: var(--font-heading, 'Playfair Display', serif);
+}
+
+.an-stats__label {
+  font-size: 0.95rem;
+  color: var(--color-gray-600, #6B6B6B);
+}
+
+/* ---- SCROLL PROGRESS ---- */
+.an-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--color-accent, #FF6B35);
+  z-index: 1000;
+  width: 0;
+  transition: width 0.1s linear;
+}
+
+.reduce-motion .an-progress {
+  transition: none;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 768px) {
+  .an-stats__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .an-stats__value {
+    font-size: 2rem;
+  }
+
+  .an-announce {
+    font-size: 0.75rem;
+  }
+}

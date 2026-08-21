@@ -1,0 +1,296 @@
+/* ux.css — Estilos para UX core: modo oscuro, back-to-top, skeleton, lightbox, sticky add-to-cart. */
+
+/* ---- MODO OSCURO ---- */
+[data-theme="dark"] {
+  --color-white: #121212;
+  --color-dark: #E0E0E0;
+  --color-gray-100: #1A1A1A;
+  --color-gray-200: #242424;
+  --color-gray-300: #2E2E2E;
+  --color-gray-400: #3A3A3A;
+  --color-gray-500: #8A8A8A;
+  --color-gray-600: #AAAAAA;
+  --color-bg: #0D0D0D;
+  --color-surface: #1A1A1A;
+  --color-surface-alt: #242424;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] body {
+  background: var(--color-bg);
+  color: var(--color-dark);
+}
+
+[data-theme="dark"] .site-header {
+  background: var(--color-surface);
+}
+
+[data-theme="dark"] .cart-drawer {
+  background: var(--color-surface);
+}
+
+[data-theme="dark"] .product-card {
+  background: var(--color-surface-alt);
+}
+
+[data-theme="dark"] .modal,
+[data-theme="dark"] .qv-modal,
+[data-theme="dark"] .cm-modal,
+[data-theme="dark"] .ck-modal {
+  background: var(--color-surface);
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  background: var(--color-gray-300);
+  color: var(--color-dark);
+  border-color: var(--color-gray-400);
+}
+
+/* ---- BOTÓN TEMA ---- */
+.ux-theme {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--color-dark);
+  transition: background 0.2s ease;
+}
+
+.ux-theme:hover {
+  background: var(--color-gray-200);
+}
+
+.ux-theme:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ---- BACK-TO-TOP ---- */
+.ux-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 48px;
+  height: 48px;
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 100;
+}
+
+.ux-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.ux-top:hover {
+  background: var(--color-dark);
+}
+
+.ux-top:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ---- STICKY HEADER ---- */
+.site-header.is-scrolled {
+  box-shadow: var(--shadow-sm);
+  background: var(--color-white, #fff);
+  backdrop-filter: blur(8px);
+}
+
+[data-theme="dark"] .site-header.is-scrolled {
+  background: rgba(18, 18, 18, 0.95);
+}
+
+/* ---- SKELETON LOADERS ---- */
+.ux-skeleton {
+  background: var(--color-gray-200, #F5F5F5);
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+  animation: ux-pulse 1.5s ease-in-out infinite;
+}
+
+.ux-skeleton__image {
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--color-gray-300, #E0E0E0);
+}
+
+.ux-skeleton__text {
+  height: 14px;
+  margin: 0.75rem;
+  background: var(--color-gray-300, #E0E0E0);
+  border-radius: 4px;
+}
+
+.ux-skeleton__text--short {
+  width: 60%;
+}
+
+@keyframes ux-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.reduce-motion .ux-skeleton {
+  animation: none;
+}
+
+/* ---- LIGHTBOX ---- */
+.ux-lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.ux-lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.ux-lightbox__content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.ux-lightbox__image {
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: var(--radius-md, 8px);
+}
+
+.ux-lightbox__close {
+  position: absolute;
+  top: -3rem;
+  right: 0;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  line-height: 1;
+}
+
+.ux-lightbox__prev,
+.ux-lightbox__next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.ux-lightbox__prev { left: -4rem; }
+.ux-lightbox__next { right: -4rem; }
+
+.ux-lightbox__prev:hover,
+.ux-lightbox__next:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ---- STICKY ADD-TO-CART ---- */
+.ux-sticky-add {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-white, #fff);
+  border-top: 1px solid var(--color-gray-300, #E0E0E0);
+  padding: 1rem 1.5rem;
+  z-index: 90;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ux-sticky-add.is-visible {
+  transform: translateY(0);
+}
+
+[data-theme="dark"] .ux-sticky-add {
+  background: var(--color-surface);
+  border-color: var(--color-gray-400);
+}
+
+.ux-sticky-add__content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.ux-sticky-add__price {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-dark);
+}
+
+.reduce-motion .ux-top,
+.reduce-motion .ux-sticky-add,
+.reduce-motion .ux-lightbox {
+  transition: none;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 768px) {
+  .ux-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  .ux-lightbox__prev { left: 0.5rem; }
+  .ux-lightbox__next { right: 0.5rem; }
+
+  .ux-sticky-add__content {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
