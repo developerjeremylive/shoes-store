@@ -1,11 +1,11 @@
 // ux.js — UX core: modo oscuro, back-to-top, sticky header, shortcuts, offline, sync, skeleton, lightbox, sticky add-to-cart.
 // Contrato §10.6: initUX() — detecta página y activa lo aplicable.
 
-import { qs, qsa, createEl, EVENTS, prefersReducedMotion, notify, saveLS, loadLS } from './modules/utils.js';
-import { cart } from './modules/cart.js';
-import { favorites } from './modules/favorites.js';
-import { getParam } from './modules/router.js';
-import { getProductById } from './data/products.js';
+import { qs, qsa, createEl, EVENTS, prefersReducedMotion, notify, saveLS, loadLS } from './utils.js';
+import { cart } from './cart.js';
+import { favorites } from './favorites.js';
+import { getParam } from './router.js';
+import { getProductById } from '../data/products.js';
 
 // ---- MODO OSCURO ----
 

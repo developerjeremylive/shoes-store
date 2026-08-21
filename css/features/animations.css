@@ -84,6 +84,25 @@
   transition: none;
 }
 
+/* ---- HERO INTRO (GSAP anima desde opacity:0) ---- */
+.hero-title,
+.hero-subtitle,
+.hero-cta,
+.hero .eyebrow,
+.hero-scroll-hint {
+  will-change: transform, opacity;
+}
+
+/* Fallback si GSAP no carga: elementos visibles */
+.no-gsap .hero-title,
+.no-gsap .hero-subtitle,
+.no-gsap .hero-cta,
+.no-gsap .hero .eyebrow,
+.no-gsap .hero-scroll-hint {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
 /* ---- RESPONSIVE ---- */
 @media (max-width: 768px) {
   .an-stats__grid {

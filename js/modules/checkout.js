@@ -1,8 +1,8 @@
 // checkout.js — Checkout multi-paso + barra de envío gratis + cupón.
 // Contrato §10.1: initCheckout() — modal multi-paso, barra progreso envío, cupón.
 
-import { qs, qsa, createEl, formatPrice, notify, saveLS, loadLS } from './modules/utils.js';
-import { cart } from './modules/cart.js';
+import { qs, qsa, createEl, formatPrice, notify, saveLS, loadLS } from './utils.js';
+import { cart } from './cart.js';
 
 // ---- BARRA DE PROGRESO A ENVÍO GRATIS ----
 
@@ -10,7 +10,6 @@ function renderShippingProgress() {
   const drawer = qs('#cartDrawer');
   if (!drawer) return;
 
-  // Evitar duplicar.
   const existing = qs('#ck-shipping-progress');
   if (existing) existing.remove();
 
@@ -40,65 +39,10 @@ function renderShippingProgress() {
     `;
   }
 
-  // Insertar después del header del drawer.
   const header = qs('.cart-drawer__header', drawer);
   if (header && header.parentNode) {
     header.parentNode.insertBefore(el, header.nextSibling);
   }
-}
-
-// ---- INPUT DE CUPÓN ----
-
-function renderCouponInput() {
-  const drawer = qs('#cartDrawer');
-  if (!drawer) return;
-
-  const existing = qs('#ck-coupon');
-  if (existing) existing.remove();
-
-  const container = createEl('div', 'ck-coupon');
-  container.id = 'ck-coupon';
-  container.innerHTML = `
-    <div class="ck-coupon__form">
-      <input type="text" class="ck-coupon__input" placeholder="Código de cupón" maxlength="20">
-      <button class="btn btn-outline btn-sm ck-coupon__btn" type="button">Aplicar</button>
-    </div>
-    <div class="ck-coupon__msg"></div>
-  `;
-
-  // Insertar antes del resumen.
-  const summary = qs('.cart-summary', drawer) || qs('#cartSummary', drawer);
-  if (summary && summary.parentNode) {
-    summary.parentNode.insertBefore(container, summary);
-  } else {
-    drawer.appendChild(container);
-  }
-
-  const input = qs('.ck-coupon__input', container);
-  const btn = qs('.ck-coupon__btn', container);
-  const msg = qs('.ck-coupon__msg', container);
-
-  const apply = () => {
-    const code = input.value.trim();
-    if (!code) return;
-    const res = cart.applyCoupon(code);
-    if (res.ok) {
-      msg.textContent = res.message;
-      msg.className = 'ck-coupon__msg ck-coupon__msg--success';
-      notify(res.message, 'success');
-    } else {
-      msg.textContent = res.message;
-      msg.className = 'ck-coupon__msg ck-coupon__msg--error';
-      notify(res.message, 'error');
-    }
-    cart.render();
-    renderShippingProgress();
-  };
-
-  if (btn) btn.addEventListener('click', apply);
-  if (input) input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') apply();
-  });
 }
 
 // ---- MODAL CHECKOUT MULTI-PASO ----
@@ -377,7 +321,6 @@ function openCheckout() {
 // ---- EXPORT ----
 
 export function initCheckout() {
-  // Reemplazar el comportamiento del #checkoutBtn.
   const checkoutBtn = qs('#checkoutBtn');
   if (checkoutBtn) {
     checkoutBtn.addEventListener('click', (e) => {
@@ -387,13 +330,9 @@ export function initCheckout() {
     });
   }
 
-  // Actualizar barra de envío y cupón cuando cambia el carrito.
   window.addEventListener('cart:changed', () => {
     renderShippingProgress();
-    renderCouponInput();
   });
 
-  // Render inicial.
   renderShippingProgress();
-  renderCouponInput();
 }

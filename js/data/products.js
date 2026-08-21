@@ -848,3 +848,29 @@ export const categories = [
   { id: 'lifestyle', name: 'Lifestyle', count: 6 },
   { id: 'outdoor', name: 'Outdoor', count: 4 }
 ];
+
+// Reseñas mock deterministas por producto (generadas por plantilla a partir del id).
+const reviewAuthors = ['María González', 'Carlos Ramírez', 'Lucía Fernández', 'Andrés Molina'];
+const reviewDates = ['12 de mayo, 2026', '3 de abril, 2026', '21 de marzo, 2026', '8 de febrero, 2026'];
+const reviewTexts = [
+  (name) => `Excelente ${name}, muy cómodo y con buen agarre. Lo uso a diario.`,
+  (name) => `Muy buena calidad y la talla es exacta. ${name} superó mis expectativas.`,
+  (name) => `El diseño es espectacular y llegó rapidísimo. Volveré a comprar.`,
+  (name) => `${name} es perfecto para uso prolongado. Muy recomendable.`
+];
+
+export function getReviews(productId) {
+  const product = getProductById(productId);
+  if (!product) return [];
+  return reviewAuthors.map((name, i) => ({
+    name,
+    date: reviewDates[i],
+    rating: 4 + (i % 2),
+    title: `Reseña de ${name}`,
+    text: reviewTexts[i](product.name)
+  }));
+}
+
+export function getWarranty() {
+  return { months: 12, text: 'Garantía de 12 meses contra defectos de fabricación' };
+}

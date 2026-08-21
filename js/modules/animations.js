@@ -1,7 +1,7 @@
 // animations.js — Animaciones GSAP + CSS: announcement bar, stats, reveals, scroll progress, hero intro.
 // Contrato §10.7: initAnimations() — detecta GSAP y aplica animaciones.
 
-import { qs, qsa, createEl, prefersReducedMotion } from './modules/utils.js';
+import { qs, qsa, createEl, prefersReducedMotion } from './utils.js';
 
 // ---- ANNOUNCEMENT BAR (SOLO INDEX) ----
 
@@ -73,12 +73,10 @@ function initReveals() {
 
   gsap.registerPlugin(ScrollTrigger);
 
-  // Seleccionar elementos con data-reveal o selectores específicos.
   const selectors = '[data-reveal], .section-title, .category-card, .product-card, .testimonial-slide, .footer-col';
   const elements = qsa(selectors);
 
   elements.forEach((el, i) => {
-    // Obtener delay personalizado o usar stagger.
     const delayAttr = el.dataset.revealDelay;
     const delay = delayAttr ? parseFloat(delayAttr) : (i % 5) * 0.1;
 
@@ -90,11 +88,57 @@ function initReveals() {
       ease: 'power2.out',
       scrollTrigger: {
         trigger: el,
-        start: 'top 85%',
+        start: 'top 95%',
         once: true
       }
     });
   });
+}
+
+// ---- TIMELINE REVEALS (sección Nuestra Historia) ----
+
+function initTimelineReveals() {
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+  if (prefersReducedMotion()) return;
+
+  const page = qs('script[data-page]')?.dataset.page || 'home';
+  if (page !== 'home') return;
+
+  const timeline = qs('#timeline') || qs('.timeline');
+  if (!timeline) return;
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const milestones = qsa('.timeline-milestone', timeline);
+  milestones.forEach((ms, i) => {
+    gsap.from(ms, {
+      opacity: 0,
+      x: i % 2 === 0 ? -30 : 30,
+      duration: 0.5,
+      delay: i * 0.1,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: ms,
+        start: 'top 90%',
+        once: true
+      }
+    });
+  });
+
+  const timelineTitle = qs('.section-title', timeline.closest('.section'));
+  if (timelineTitle) {
+    gsap.from(timelineTitle, {
+      y: 30,
+      opacity: 0,
+      duration: 0.6,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: timelineTitle,
+        start: 'top 95%',
+        once: true
+      }
+    });
+  }
 }
 
 // ---- COUNT-UP STATS ----
@@ -165,26 +209,44 @@ function initHeroIntro() {
   const page = qs('script[data-page]')?.dataset.page || 'home';
   if (page !== 'home') return;
 
+  const hero = qs('#hero');
   const heroTitle = qs('.hero-title');
   const heroSubtitle = qs('.hero-subtitle');
+  const heroCta = qs('.hero-cta');
+  const heroEyebrow = qs('.hero .eyebrow');
+  const heroScrollHint = qs('.hero-scroll-hint');
 
-  if (heroTitle) {
-    gsap.from(heroTitle, {
-      y: 40,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power2.out'
+  if (!hero) return;
+
+  // Elementos a animar con estado inicial oculto.
+  const animElements = [heroEyebrow, heroTitle, heroSubtitle, heroCta, heroScrollHint].filter(Boolean);
+
+  // Establecer estado inicial: invisibles.
+  animElements.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(40px)';
+  });
+
+  // Animar cuando la sección hero sea visible.
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Hero visible → animar inmediatamente.
+        animElements.forEach((el, i) => {
+          gsap.to(el, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay: i * 0.15,
+            ease: 'power2.out'
+          });
+        });
+        observer.disconnect();
+      }
     });
-  }
-  if (heroSubtitle) {
-    gsap.from(heroSubtitle, {
-      y: 40,
-      opacity: 0,
-      duration: 0.8,
-      delay: 0.2,
-      ease: 'power2.out'
-    });
-  }
+  }, { threshold: 0.1 });
+
+  observer.observe(hero);
 }
 
 // ---- AUTO-PLAY TESTIMONIOS (SOLO INDEX) ----
@@ -219,6 +281,7 @@ export function initAnimations() {
   initAnnouncementBar();
   initStatsSection();
   initReveals();
+  initTimelineReveals();
   initCountUp();
   initScrollProgress();
   initHeroIntro();

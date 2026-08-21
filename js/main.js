@@ -12,6 +12,10 @@ import { initScene as initCategoryCubes } from './three/category-cubes.js';
 import { initScene as initShowcase, setShowcaseColor } from './three/product-showcase.js';
 import { initScene as initTimeline } from './three/timeline-line.js';
 import { initScene as initFooterWaves } from './three/footer-waves.js';
+import { initCheckout } from './modules/checkout.js';
+import { initRecentlyViewed, initStockNotify } from './modules/activity.js';
+import { initUX } from './modules/ux.js';
+import { initAnimations } from './modules/animations.js';
 
 // Página actual desde el data-page del script (fallback: home).
 const page = (document.currentScript && document.currentScript.dataset.page) || qs('script[data-page]')?.dataset.page || 'home';
@@ -593,3 +597,10 @@ if (page === 'home') initHome();
 else if (page === 'tienda') initTienda();
 else if (page === 'producto') initProducto();
 else if (page === 'favoritos') initFavoritos();
+
+// Features v2: se inicializan en todas las páginas.
+initCheckout();
+initUX();
+initAnimations();
+if (page === 'home' || page === 'producto') initRecentlyViewed();
+if (page === 'producto') initStockNotify();

@@ -1,0 +1,264 @@
+/* reviews.css — Estilos para reseñas de clientes. */
+
+/* ---- RESUMEN ---- */
+.rv-summary {
+  display: flex;
+  gap: 2rem;
+  padding: 1.5rem;
+  background: var(--color-gray-100, #F8F9FA);
+  border-radius: var(--radius-md, 8px);
+  margin-bottom: 1.5rem;
+}
+
+[data-theme="dark"] .rv-summary {
+  background: var(--color-gray-200, #1A1A1A);
+}
+
+.rv-summary__avg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 100px;
+}
+
+.rv-summary__number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-dark);
+}
+
+.rv-summary__stars {
+  color: var(--color-accent, #FF6B35);
+  font-size: 1rem;
+}
+
+.rv-summary__count {
+  font-size: 0.8rem;
+  color: var(--color-gray-600, #6B6B6B);
+}
+
+.rv-summary__bars {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  justify-content: center;
+}
+
+.rv-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rv-bar__label {
+  font-size: 0.8rem;
+  color: var(--color-gray-600, #6B6B6B);
+  width: 30px;
+}
+
+.rv-bar__track {
+  flex: 1;
+  height: 8px;
+  background: var(--color-gray-300, #E0E0E0);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.rv-bar__fill {
+  height: 100%;
+  background: var(--color-accent, #FF6B35);
+  border-radius: 4px;
+}
+
+.rv-bar__count {
+  font-size: 0.8rem;
+  color: var(--color-gray-600, #6B6B6B);
+  width: 24px;
+  text-align: right;
+}
+
+/* ---- CONTROLES ---- */
+.rv-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.rv-sort {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-gray-300, #E0E0E0);
+  border-radius: var(--radius-md, 8px);
+  font-size: 0.85rem;
+  background: var(--color-white, #fff);
+}
+
+[data-theme="dark"] .rv-sort {
+  background: var(--color-gray-300, #2E2E2E);
+  border-color: var(--color-gray-400);
+}
+
+/* ---- LISTA ---- */
+.rv-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.rv-item {
+  padding: 1.25rem;
+  background: var(--color-white, #fff);
+  border: 1px solid var(--color-gray-300, #E0E0E0);
+  border-radius: var(--radius-md, 8px);
+}
+
+[data-theme="dark"] .rv-item {
+  background: var(--color-surface, #1A1A1A);
+  border-color: var(--color-gray-400);
+}
+
+.rv-item__header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.rv-item__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-accent, #FF6B35);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.rv-item__meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.rv-item__name {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.rv-item__date {
+  font-size: 0.8rem;
+  color: var(--color-gray-600, #6B6B6B);
+}
+
+.rv-item__stars {
+  color: var(--color-accent, #FF6B35);
+  font-size: 0.9rem;
+}
+
+.rv-item__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.rv-item__text {
+  font-size: 0.9rem;
+  color: var(--color-gray-600, #6B6B6B);
+  line-height: 1.5;
+}
+
+/* ---- FORMULARIO ---- */
+.rv-form-container {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.rv-form-container.is-open {
+  max-height: 600px;
+}
+
+.rv-form {
+  padding: 1.25rem;
+  background: var(--color-gray-100, #F8F9FA);
+  border-radius: var(--radius-md, 8px);
+  margin-top: 1rem;
+}
+
+[data-theme="dark"] .rv-form {
+  background: var(--color-gray-200, #1A1A1A);
+}
+
+.rv-form__group {
+  margin-bottom: 1rem;
+}
+
+.rv-form__label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+}
+
+.rv-form__input,
+.rv-form__textarea {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--color-gray-300, #E0E0E0);
+  border-radius: var(--radius-md, 8px);
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.rv-form__input:focus,
+.rv-form__textarea:focus {
+  outline: none;
+  border-color: var(--color-accent, #FF6B35);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+}
+
+.rv-form__stars {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.rv-star-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--color-gray-400, #BDBDBD);
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.rv-star-btn.is-active,
+.rv-star-btn:hover {
+  color: var(--color-accent, #FF6B35);
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 600px) {
+  .rv-summary {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .rv-controls {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+}
+
+.reduce-motion .rv-form-container {
+  transition: none;
+}

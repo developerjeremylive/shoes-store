@@ -12,6 +12,7 @@ La propuesta de valor es doble. Para el visitante, una tienda rápida y fluida d
 
 ## Características
 
+### v1 — Base
 - **Animaciones 3D scroll-driven** con Three.js: hero con zapatos low-poly y partículas, cubos de categorías, showcase de producto interactivo, línea de timeline y ondas en el footer.
 - **Carrito con cupones**: hasta 50 ítems, cupones SOLE10 (10%) y WELCOME ($200 fijos), envío gratis en pedidos desde $2000, persistencia en localStorage.
 - **Favoritos**: lista persistente con badge en el header y botón "Mover al carrito" desde la página de favoritos.
@@ -21,6 +22,18 @@ La propuesta de valor es doble. Para el visitante, una tienda rápida y fluida d
 - **Responsive**: layout adaptativo con vista cuadrícula/lista persistida en sessionStorage.
 - **Accesibilidad**: atributos ARIA, navegación por teclado en tabs y carrusel, focus trap en el drawer, Escape cierra todo.
 - **Reduced motion**: `prefers-reduced-motion` desactiva las escenas Three y añade la clase `reduce-motion` al documento.
+
+### v2 — Funcionalidades de valor
+- **Checkout multi-paso**: modal con 3 pasos (envío → pago → revisión), validación por paso, barra de progreso a envío gratis, input de cupón integrado en el drawer.
+- **Vista rápida**: botón en cada tarjeta de producto que abre un modal con imagen, tallas, colores, cantidad y añadir al carrito.
+- **Comparador de productos**: botón "Comparar" en tarjetas, barra flotante con chips, modal con tabla comparativa (máx 4 productos), resalta el más barato.
+- **Reseñas de clientes**: resumen con rating promedio y barras de distribución, ordenamiento, formulario para escribir reseñas con localStorage persistente.
+- **Vistos recientemente**: sección dinámica en home y producto con los últimos 8 productos visitados.
+- **Aviso de stock**: botón "Avísame" para tallas agotadas con notificación por email.
+- **Modo oscuro**: toggle con persistencia, respeta `prefers-color-scheme`, variables CSS redefinidas bajo `[data-theme="dark"]`.
+- **UX core**: back-to-top con progreso, sticky header, shortcuts de teclado (`/` busca, `c` abre carrito), skeleton loaders, lightbox de galería, sticky add-to-cart.
+- **Animaciones**: announcement bar con marquee, sección de estadísticas con count-up, reveals ScrollTrigger, scroll progress bar, hero intro animado con IntersectionObserver.
+- **Reseñas detalladas**: `getReviews()` y `getWarranty()` en products.js para datos mock deterministas.
 
 ## Tech stack
 
@@ -33,7 +46,7 @@ La propuesta de valor es doble. Para el visitante, una tienda rápida y fluida d
 | OrbitControls | three@0.128.0 (jsdelivr) | Órbita de cámara del showcase de producto |
 | GSAP + ScrollTrigger | 3.12.2 (cdnjs) | Animaciones de scroll en secciones del home |
 | Lucide | latest (unpkg) | Iconos SVG inline |
-| localStorage / sessionStorage | Navegador | Persistencia de carrito, favoritos, historial y vista |
+| localStorage / sessionStorage | Navegador | Persistencia de carrito, favoritos, historial, vista, tema, reseñas |
 
 No hay dependencias de npm. `package.json` solo declara `"type": "module"` para que los scripts se carguen como ES modules. Las librerías se sirven desde CDNs versionados.
 
@@ -52,18 +65,33 @@ shoes-store/
 │   ├── base.css            # Estilos base: tipografía, layout, botones
 │   ├── components.css      # Componentes de UI (~55 KB)
 │   ├── three-animations.css# Estilos de los canvas y animaciones 3D
-│   └── responsive.css      # Media queries y adaptación móvil
+│   ├── responsive.css      # Media queries y adaptación móvil
+│   └── features/           # Estilos de features v2
+│       ├── activity.css    # Vistos recientemente + aviso stock
+│       ├── animations.css  # Marquee, stats, reveals, scroll progress
+│       ├── checkout.css    # Checkout multi-paso, cupón, envío gratis
+│       ├── compare.css     # Comparador de productos
+│       ├── quickview.css   # Vista rápida modal
+│       ├── reviews.css     # Reseñas de clientes
+│       └── ux.css          # Modo oscuro, back-to-top, skeleton, lightbox
 └── js/
     ├── main.js             # Entry point: chrome global, scroll, delegación, init por página
     ├── data/
-    │   └── products.js     # 36 productos mock, 6 categorías, helpers de consulta
+    │   └── products.js     # 36 productos mock, 6 categorías, helpers, reseñas, garantía
     ├── modules/
     │   ├── utils.js        # formatPrice, DOM helpers, storage, toast, createProductCard
     │   ├── cart.js         # Singleton del carrito con cupones y envío
     │   ├── favorites.js    # Singleton de favoritos
     │   ├── filters.js      # FilterSystem: filtros, orden y paginación
     │   ├── search.js       # GlobalSearch: dropdown, teclado e historial
-    │   └── router.js       # getParam, setParams, onPopState
+    │   ├── router.js       # getParam, setParams, onPopState
+    │   ├── checkout.js     # Checkout multi-paso + barra envío gratis + cupón
+    │   ├── quickview.js    # Vista rápida modal
+    │   ├── compare.js      # Comparador hasta 4 productos
+    │   ├── reviews.js      # Reseñas con localStorage
+    │   ├── activity.js     # Vistos recientemente + aviso stock
+    │   ├── ux.js           # Modo oscuro, back-to-top, shortcuts, skeleton, lightbox
+    │   └── animations.js   # GSAP reveals, count-up, marquee, scroll progress
     └── three/
         ├── hero-scene.js       # Zapatos low-poly + partículas del hero
         ├── category-cubes.js   # Cubos de categorías
@@ -91,8 +119,8 @@ Luego abre http://localhost:4173 en el navegador.
 ## Requisitos del navegador
 
 - Navegadores modernos: Chrome, Firefox o Safari en sus versiones actuales.
-- WebGL para las animaciones 3D. Si no está disponible, las escenas fallan en silencio y el resto de la tienda funciona con normalidad: el contenido estático, el carrito, los filtros y la búsqueda no dependen de Three.js.
-- `prefers-reduced-motion: reduce` desactiva las escenas 3D de forma automática.
+- WebGL para las animaciones 3D. Si no está disponible, las escenas fallan en silencio y el resto de la tienda funciona con normalidad.
+- `prefers-reduced-motion: reduce` desactiva las animaciones automáticas y las escenas 3D.
 
 ## Datos de prueba
 
@@ -138,9 +166,35 @@ Los tokens de diseño viven en `css/variables.css`: colores base (`--color-white
 
 ## Notas técnicas
 
-- **Máximo 2 escenas Three activas**: cada escena usa `IntersectionObserver` para pausar su loop de `requestAnimationFrame` cuando sale del viewport y liberar recursos con `cleanup()`. Así el home, que tiene 5 escenas, nunca renderiza más de las que están visibles.
-- **Evento `globalScroll`**: `ScrollManager` en `main.js` escucha el scroll con un solo listener pasivo, lo throttle con `requestAnimationFrame` y despacha `globalScroll` con `{ scrollY, velocity }`. Las escenas Three solo guardan esos valores y aplican el movimiento con lerp dentro de su loop, nunca en el listener.
-- **Keys de localStorage**: `solestyle_cart` (carrito), `solestyle_favorites` (favoritos), `solestyle_search_history` (historial de búsqueda). La vista grid/lista se guarda en `sessionStorage` bajo `solestyle_view`.
-- **Eventos personalizados**: `cart:changed` y `favorites:changed` se despachan tras cada mutación de carrito o favoritos, para que cualquier componente pueda reaccionar.
-- **Delegación de eventos**: los botones `data-add-to-cart`, `data-favorite` y `data-move-to-cart` se manejan con un único listener en `document`, así las tarjetas generadas dinámicamente funcionan sin re-cablear.
-- **Sin backend**: el checkout es simulado. El botón de compra valida stock, abre el modal de confirmación y vacía el carrito.
+### Arquitectura v2
+- **Features modulares**: cada feature vive en `js/modules/` con su CSS en `css/features/`. Los prefijos de clases CSS (`ck-`, `qv-`, `cm-`, `rv-`, `act-`, `ux-`, `an-`) evitan colisiones.
+- **Sin ediciones existentes**: las features v2 solo crean archivos nuevos y se integran via `main.js` con imports/init.
+- **Eventos custom**: `checkout:completed`, `compare:changed`, `theme:changed`, `recently:changed` permiten comunicación entre features.
+- **localStorage keys v2**: `solestyle_address`, `solestyle_orders`, `solestyle_compare` (sessionStorage), `solestyle_reviews_<productId>`, `solestyle_recently_viewed`, `solestyle_stock_alerts`, `solestyle_theme`.
+
+### Rendimiento
+- **Máximo 2 escenas Three activas**: cada escena usa `IntersectionObserver` para pausar su loop de `requestAnimationFrame` cuando sale del viewport y liberar recursos con `cleanup()`.
+- **Evento `globalScroll`**: `ScrollManager` en `main.js` escucha el scroll con un solo listener pasivo, lo throttle con `requestAnimationFrame` y despacha `globalScroll` con `{ scrollY, velocity }`.
+- **Skeleton loaders**: en tienda, se muestran 8 placeholders animados mientras se cargan los productos.
+- **Lazy loading**: imágenes con `loading="lazy"` excepto hero y galería principal.
+
+### Accesibilidad
+- `aria-label` en todo botón de icono; `role="dialog" aria-modal` drawer/modal.
+- Escape cierra lo último abierto; foco manejado con focus trap en drawer y modales.
+- Navegación completa por teclado: Tab, Enter, Espacio en chips/swatches/tabs.
+- `prefers-reduced-motion` → `.reduce-motion * { animation:none !important; transition:none !important }` + JS no inicia escenas ni animaciones automáticas.
+
+### Keys de localStorage
+| Key | Tipo | Descripción |
+|-----|------|-------------|
+| `solestyle_cart` | Array | Items del carrito (máx 50) |
+| `solestyle_favorites` | Array | IDs de favoritos |
+| `solestyle_search_history` | Array | Últimos 10 términos de búsqueda |
+| `solestyle_theme` | String | `'dark'` o `'light'` |
+| `solestyle_address` | Object | Dirección guardada del checkout |
+| `solestyle_orders` | Array | Historial de pedidos |
+| `solestyle_reviews_<id>` | Array | Reseñas guardadas por producto |
+| `solestyle_recently_viewed` | Array | Últimos 8 productos vistos |
+| `solestyle_stock_alerts` | Array | Alertas de stock por producto |
+| `solestyle_view` | String | Vista grid/lista (sessionStorage) |
+| `solestyle_compare` | Array | IDs a comparar (sessionStorage) |
