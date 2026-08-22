@@ -12,6 +12,7 @@ import { formatPrice, createEl, qs, qsa, saveLS, loadLS, notify } from './utils.
 const LS_PRODUCTS = 'solestyle_cms_products';
 const LS_PAGES = 'solestyle_cms_pages';
 const LS_CATEGORIES = 'solestyle_cms_categories';
+const LS_SITE_CONTENT = 'solestyle_cms_site_content';
 
 // ── Secciones del CMS ────────────────────────────────────────
 const SECTIONS = [
@@ -19,7 +20,8 @@ const SECTIONS = [
   { id: 'products', title: 'Productos' },
   { id: 'product-edit', title: 'Editar Producto' },
   { id: 'pages', title: 'Páginas' },
-  { id: 'categories', title: 'Categorías' }
+  { id: 'categories', title: 'Categorías' },
+  { id: 'site-content', title: 'Contenido del Sitio' }
 ];
 
 const ALL_SIZES = [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45];
@@ -124,6 +126,124 @@ function seedPages() {
   ];
 }
 
+// ── Reviews Data Layer ───────────────────────────────────────
+
+function getReviews(productId) {
+  const key = `solestyle_cms_reviews_${productId}`;
+  let stored = loadLS(key, null);
+  if (!stored || !Array.isArray(stored)) {
+    stored = seedReviews(productId);
+    saveLS(key, stored);
+  }
+  return stored;
+}
+
+function saveReviews(productId, reviews) {
+  const key = `solestyle_cms_reviews_${productId}`;
+  saveLS(key, reviews);
+}
+
+function seedReviews(productId) {
+  const product = getProducts().find(p => p.id === productId);
+  if (!product || !product.reviews || product.reviews === 0) return [];
+  const mockPool = [
+    { author: 'Carlos Mendoza', rating: 5, title: 'Excelente para entrenar', text: 'Las usé en mi último maratón y la amortiguación es increíble. Muy ligeras y con gran soporte.' },
+    { author: 'Lucía Fernández', rating: 4, title: 'Muy bonitas y cómodas', text: 'Las combino con outfits casuales y formales. El material de alta calidad se nota desde el primer uso.' },
+    { author: 'Andrés Ruiz', rating: 5, title: 'Perfectas para viajar', text: 'Las llevé en un viaje de 3 semanas y nunca me molestaron. Empaque muy bien presentado.' },
+    { author: 'María Torres', rating: 5, title: 'Recomendadas 100%', text: 'Mis clientes siempre me preguntan qué calzado uso. Estas son mis favoritas para sesiones de alto impacto.' },
+    { author: 'Diego Herrera', rating: 4, title: 'Relación calidad-precio', text: 'Para el precio que tienen, la calidad es insuperable. Las uso todos los días en la universidad.' },
+    { author: 'Ana García', rating: 5, title: 'Las amo', text: 'Súper fotogénicas y cómodas. Ya las recomendé en mi canal y mis seguidoras las aman.' }
+  ];
+  const count = Math.min(product.reviews, mockPool.length);
+  const reviews = [];
+  for (let i = 0; i < count; i++) {
+    reviews.push({
+      id: `r${Date.now()}_${i}`,
+      author: mockPool[i].author,
+      date: `2026-0${Math.min(i + 1, 9)}-${String(Math.floor(Math.random() * 28) + 1).padStart(2, '0')}`,
+      rating: mockPool[i].rating,
+      title: mockPool[i].title,
+      text: mockPool[i].text
+    });
+  }
+  return reviews;
+}
+
+// ── Site Content Data Layer ──────────────────────────────────
+
+function getSiteContent() {
+  let stored = loadLS(LS_SITE_CONTENT, null);
+  if (!stored || typeof stored !== 'object') {
+    stored = seedSiteContent();
+    saveLS(LS_SITE_CONTENT, stored);
+  }
+  return stored;
+}
+
+function saveSiteContentData(data) {
+  saveLS(LS_SITE_CONTENT, data);
+}
+
+function seedSiteContent() {
+  return {
+    siteName: 'SoleStyle',
+    navLinks: [
+      { label: 'Inicio', href: 'index.html' },
+      { label: 'Tienda', href: 'tienda.html' },
+      { label: 'Colecciones', href: 'index.html#colecciones' },
+      { label: 'Contacto', href: 'index.html#contacto' }
+    ],
+    heroEyebrow: 'Colección 2026',
+    heroTitle: 'Pisa',
+    heroTitleAccent: 'Fuerte',
+    heroSubtitle: 'Tecnología, diseño y comodidad en cada paso. Calzado premium hecho para moverte.',
+    heroCtaText: 'Explorar Colección',
+    heroImageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=900&auto=format&fit=crop&q=80',
+    heroStat1: 'Envío gratis desde $2,000',
+    heroStat2: '30 días de devolución',
+    heroStat3: 'Garantía de 2 años',
+    categoriesEyebrow: 'Categorías',
+    categoriesTitle: 'Encuentra tu estilo',
+    categoriesSubtitle: 'Explora nuestras colecciones diseñadas para cada ritmo de vida.',
+    featuredEyebrow: 'Destacados',
+    featuredTitle: 'Los más buscados',
+    showcaseEyebrow: 'Producto destacado',
+    showcaseProductId: 1,
+    timelineEyebrow: 'Nuestra Historia',
+    timelineTitle: 'Un paso a la vez',
+    testimonialsEyebrow: 'Testimonios',
+    testimonialsTitle: 'Lo que dicen nuestros clientes',
+    testimonials: [
+      { name: 'Carlos Mendoza', role: 'Corredor amateur', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80', rating: 5, text: 'Las AirRunner Pro cambiaron por completo mis entrenamientos. Ligereza y amortiguación que no había probado en ninguna otra marca.' },
+      { name: 'Lucía Fernández', role: 'Diseñadora', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80', rating: 4.5, text: 'Combinan estilo y comodidad a la perfección. Los uso todos los días en la oficina y siguen impecables después de meses.' },
+      { name: 'Andrés Ruiz', role: 'Viajero frecuente', photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&auto=format&fit=crop&q=80', rating: 5, text: 'Pedí desde el extranjero y llegó en tiempo récord. La calidad es superior y el servicio al cliente, excelente.' }
+    ],
+    newsletterEyebrow: 'Newsletter',
+    newsletterTitle: 'Únete a SoleStyle',
+    newsletterSubtitle: 'Recibe novedades, lanzamientos y ofertas exclusivas directamente en tu correo.',
+    newsletterCtaText: 'Suscribirme',
+    footerDescription: 'Calzado premium con tecnología, diseño y comodidad en cada paso.',
+    footerSocial: { facebook: '#', instagram: '#', twitter: '#' },
+    footerTiendaTitle: 'Tienda',
+    footerTiendaLinks: [
+      { label: 'Running', href: 'tienda.html?category=running' },
+      { label: 'Casual', href: 'tienda.html?category=casual' },
+      { label: 'Formal', href: 'tienda.html?category=formal' },
+      { label: 'Outdoor', href: 'tienda.html?category=outdoor' }
+    ],
+    footerAyudaTitle: 'Ayuda',
+    footerAyudaLinks: [
+      { label: 'Envíos', href: '#' },
+      { label: 'Devoluciones', href: '#' },
+      { label: 'Tallas', href: '#' },
+      { label: 'Contacto', href: '#' }
+    ],
+    footerPagosTitle: 'Pagos',
+    footerPagosBadges: ['Visa', 'Mastercard', 'Amex', 'PayPal'],
+    footerCopyright: '© 2026 SoleStyle. Todos los derechos reservados.'
+  };
+}
+
 // ── Toast ────────────────────────────────────────────────────
 
 function showToast(msg, type = 'success') {
@@ -153,9 +273,15 @@ function checkAuth() {
 // ── Navigation ───────────────────────────────────────────────
 
 let currentSection = 'dashboard';
+let navHistory = ['dashboard'];
 
-function navigateTo(sectionId) {
-  if (sectionId === currentSection) return;
+function navigateTo(sectionId, options = {}) {
+  const { addToHistory = true } = options;
+  if (sectionId === currentSection && addToHistory) return;
+  if (addToHistory) {
+    navHistory.push(sectionId);
+    if (navHistory.length > 20) navHistory.shift();
+  }
   currentSection = sectionId;
 
   // Actualizar links activos
@@ -178,12 +304,23 @@ function navigateTo(sectionId) {
   renderSection(sectionId);
 }
 
+function goBack() {
+  if (navHistory.length > 1) {
+    navHistory.pop();
+    const prev = navHistory[navHistory.length - 1];
+    navigateTo(prev, { addToHistory: false });
+  } else {
+    navigateTo('dashboard', { addToHistory: false });
+  }
+}
+
 function renderSection(id) {
   switch (id) {
     case 'dashboard': renderDashboard(); break;
     case 'products': renderProductList(); break;
     case 'pages': renderPageList(); break;
     case 'categories': renderCategoryList(); break;
+    case 'site-content': renderSiteContent(); break;
     // product-edit se renderiza directamente al hacer clic en editar/nuevo
   }
 }
@@ -453,6 +590,7 @@ function renderProductEdit(product) {
           <button class="cms-tab" data-tab="images">Imágenes</button>
           <button class="cms-tab" data-tab="sizes">Tallas</button>
           <button class="cms-tab" data-tab="stock">Stock</button>
+          <button class="cms-tab" data-tab="reviews">Reseñas</button>
         </div>
 
         <form class="cms-form" id="product-form" style="max-width:100%;margin-top:var(--space-lg);">
@@ -577,6 +715,15 @@ function renderProductEdit(product) {
             </div>
           </div>
 
+          <!-- Tab: Reseñas -->
+          <div class="cms-tab-content" data-tab-content="reviews">
+            <div class="cms-form-group">
+              <label>Reseñas de Clientes</label>
+              <p class="cms-form-help">Gestiona las reseñas de este producto. El número se actualiza automáticamente.</p>
+              <div id="cms-reviews-area" style="margin-top:var(--space-md);">${p.id ? renderReviewsListHTML(p.id) : '<p style="color:var(--color-text-muted);font-size:var(--fs-sm);">Guarda el producto primero para gestionar reseñas.</p>'}</div>
+            </div>
+          </div>
+
           <!-- Actions -->
           <div class="cms-form-actions">
             <button type="submit" class="cms-btn cms-btn--primary" id="btn-save-product">
@@ -633,7 +780,7 @@ function renderProductEdit(product) {
   const cancelBtn = qs('#btn-cancel-product');
   if (cancelBtn) {
     cancelBtn.addEventListener('click', () => {
-      navigateTo('products');
+      goBack();
     });
   }
 
@@ -641,7 +788,7 @@ function renderProductEdit(product) {
   const backBtn = qs('#btn-back-products');
   if (backBtn) {
     backBtn.addEventListener('click', () => {
-      navigateTo('products');
+      goBack();
     });
   }
 }
@@ -731,6 +878,8 @@ function bindProductEditEvents(originalProduct) {
       }
     });
   }
+
+  if (originalProduct.id) bindReviewsEvents(originalProduct);
 }
 
 function bindRemoveColors() {
@@ -778,6 +927,168 @@ function updateProductPreview() {
   }
 }
 
+// ── Reviews Tab ──────────────────────────────────────────────
+
+function renderReviewsListHTML(productId) {
+  const reviews = getReviews(productId);
+  if (reviews.length === 0) {
+    return `
+      <div class="cms-empty-state">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <p>No hay reseñas aún.</p>
+      </div>
+      <button type="button" class="cms-btn cms-btn--outline cms-btn--sm" id="btn-add-review" style="margin-top:var(--space-md);">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+        Agregar reseña
+      </button>
+    `;
+  }
+
+  const starsHTML = (rating) => {
+    let html = '<span class="cms-review-stars">';
+    for (let i = 1; i <= 5; i++) {
+      if (i <= Math.floor(rating)) {
+        html += '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+      } else if (i - 0.5 <= rating) {
+        html += '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" opacity="0.5"/></svg>';
+      }
+    }
+    html += '</span>';
+    return html;
+  };
+
+  return `
+    <div class="cms-review-list" id="cms-review-list">
+      ${reviews.map(r => `
+        <div class="cms-review-card" data-review-id="${r.id}">
+          <div class="cms-review-card__header">
+            <div>
+              <span class="cms-review-card__author">${escHtml(r.author)}</span>
+              <span class="cms-review-card__date">${escHtml(r.date)}</span>
+            </div>
+            ${starsHTML(r.rating)}
+          </div>
+          <div class="cms-review-card__title">${escHtml(r.title)}</div>
+          <p class="cms-review-card__text">${escHtml(r.text)}</p>
+          <div class="cms-review-card__actions">
+            <button type="button" class="cms-btn cms-btn--sm cms-btn--outline" data-edit-review="${r.id}">Editar</button>
+            <button type="button" class="cms-btn cms-btn--sm cms-btn--outline" data-delete-review="${r.id}" style="color:var(--color-error,#e53e3e);border-color:var(--color-error,#e53e3e);">Eliminar</button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <button type="button" class="cms-btn cms-btn--outline cms-btn--sm" id="btn-add-review" style="margin-top:var(--space-md);">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+      Agregar reseña
+    </button>
+  `;
+}
+
+function bindReviewsEvents(product) {
+  if (!product.id) return;
+
+  const addBtn = qs('#btn-add-review');
+  if (addBtn) addBtn.addEventListener('click', () => showReviewForm(product.id, null));
+
+  qsa('[data-edit-review]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const reviews = getReviews(product.id);
+      const review = reviews.find(r => r.id === btn.dataset.editReview);
+      if (review) showReviewForm(product.id, review);
+    });
+  });
+
+  qsa('[data-delete-review]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (confirm('¿Eliminar esta reseña?')) {
+        const reviews = getReviews(product.id).filter(r => r.id !== btn.dataset.deleteReview);
+        saveReviews(product.id, reviews);
+        updateReviewCount(product.id);
+        const area = qs('#cms-reviews-area');
+        if (area) { area.innerHTML = renderReviewsListHTML(product.id); bindReviewsEvents(product); }
+        showToast('Reseña eliminada');
+      }
+    });
+  });
+}
+
+function showReviewForm(productId, existingReview) {
+  const isEdit = !!existingReview;
+  const r = existingReview || { id: null, author: '', date: new Date().toISOString().slice(0, 10), rating: 5, title: '', text: '' };
+  const area = qs('#cms-reviews-area');
+  if (!area) return;
+
+  const formHTML = `
+    <div class="cms-review-form" id="review-form">
+      <h4 style="font-size:var(--fs-sm);font-weight:600;color:var(--color-text-primary);margin:0;">${isEdit ? 'Editar' : 'Nueva'} Reseña</h4>
+      <div class="cms-form-row">
+        <div class="cms-form-group">
+          <label for="rv-author">Autor</label>
+          <input type="text" id="rv-author" class="cms-form-input" value="${escHtml(r.author)}" placeholder="Nombre del cliente" required>
+        </div>
+        <div class="cms-form-group">
+          <label for="rv-date">Fecha</label>
+          <input type="date" id="rv-date" class="cms-form-input" value="${r.date}" required>
+        </div>
+      </div>
+      <div class="cms-form-group">
+        <label for="rv-rating">Calificación</label>
+        <select id="rv-rating" class="cms-form-select">
+          ${[5, 4.5, 4, 3.5, 3, 2, 1, 0].map(v => `<option value="${v}" ${v === r.rating ? 'selected' : ''}>${v} estrella${v !== 1 ? 's' : ''}</option>`).join('')}
+        </select>
+      </div>
+      <div class="cms-form-group">
+        <label for="rv-title">Título</label>
+        <input type="text" id="rv-title" class="cms-form-input" value="${escHtml(r.title)}" placeholder="Resumen breve" required>
+      </div>
+      <div class="cms-form-group">
+        <label for="rv-text">Texto de la reseña</label>
+        <textarea id="rv-text" class="cms-form-textarea" rows="3" placeholder="Opinión detallada..." required>${escHtml(r.text)}</textarea>
+      </div>
+      <div style="display:flex;gap:var(--space-sm);justify-content:flex-end;">
+        <button type="button" class="cms-btn cms-btn--outline cms-btn--sm" id="rv-cancel">Cancelar</button>
+        <button type="button" class="cms-btn cms-btn--primary cms-btn--sm" id="rv-save">${isEdit ? 'Actualizar' : 'Guardar'}</button>
+      </div>
+    </div>
+  `;
+
+  const existingForm = qs('#review-form');
+  if (existingForm) existingForm.remove();
+  area.insertAdjacentHTML('beforeend', formHTML);
+
+  qs('#rv-cancel').addEventListener('click', () => { const f = qs('#review-form'); if (f) f.remove(); });
+
+  qs('#rv-save').addEventListener('click', () => {
+    const author = qs('#rv-author').value.trim();
+    const date = qs('#rv-date').value;
+    const rating = parseFloat(qs('#rv-rating').value);
+    const title = qs('#rv-title').value.trim();
+    const text = qs('#rv-text').value.trim();
+
+    if (!author || !title || !text) { showToast('Completa autor, título y texto.', 'error'); return; }
+
+    const reviews = getReviews(productId);
+    if (isEdit) {
+      const idx = reviews.findIndex(rv => rv.id === existingReview.id);
+      if (idx !== -1) reviews[idx] = { ...reviews[idx], author, date, rating, title, text };
+    } else {
+      reviews.unshift({ id: `r${Date.now()}_${Math.random().toString(36).slice(2, 6)}`, author, date, rating, title, text });
+    }
+
+    saveReviews(productId, reviews);
+    updateReviewCount(productId);
+    area.innerHTML = renderReviewsListHTML(productId);
+    bindReviewsEvents({ id: productId });
+    showToast(isEdit ? 'Reseña actualizada' : 'Reseña agregada');
+  });
+}
+
+function updateReviewCount(productId) {
+  const reviews = getReviews(productId);
+  const countEl = qs('#p-reviews');
+  if (countEl) countEl.value = reviews.length;
+}
+
 function gatherProductData(original) {
   const name = qs('#p-name').value.trim();
   const brand = qs('#p-brand').value.trim();
@@ -794,49 +1105,40 @@ function gatherProductData(original) {
   const isNew = qs('#p-isNew').checked;
   const isBestseller = qs('#p-isBestseller').checked;
 
-  // Colors
   const colors = [];
   qsa('#cms-colors-list > div').forEach(row => {
     const cname = row.querySelector('.cms-color-name')?.value.trim() || '';
     const chex = row.querySelector('.cms-color-hex')?.value || '#000000';
     const cimage = row.querySelector('.cms-color-image')?.value.trim() || '';
-    if (cname || cimage) {
-      colors.push({ name: cname, hex: chex, image: cimage });
-    }
+    if (cname || cimage) colors.push({ name: cname, hex: chex, image: cimage });
   });
 
-  // Images
   const images = [];
   qsa('#cms-images-list .cms-image-url').forEach(input => {
     const url = input.value.trim();
     if (url) images.push(url);
   });
 
-  // Sizes
   const sizes = [];
-  qsa('.cms-size-cb:checked').forEach(cb => {
-    sizes.push(parseInt(cb.value, 10));
-  });
+  qsa('.cms-size-cb:checked').forEach(cb => sizes.push(parseInt(cb.value, 10)));
 
-  // Stock
   const stock = {};
   qsa('#cms-stock-grid input[type="number"]').forEach(input => {
     const size = input.dataset.stockSize;
     const color = input.dataset.stockColor;
     const val = parseInt(input.value, 10) || 0;
-    if (size && color) {
-      stock[`${size}-${color}`] = val;
-    }
+    if (size && color) stock[`${size}-${color}`] = val;
   });
+
+  let reviewCount = reviews;
+  if (original?.id) reviewCount = getReviews(original.id).length;
 
   return {
     id: original?.id || null,
     name, brand, category, price, discountPrice,
-    sizes, colors, images,
-    description,
+    sizes, colors, images, description,
     specs: { upper, sole, weight },
-    rating, reviews, isNew, isBestseller,
-    stock
+    rating, reviews: reviewCount, isNew, isBestseller, stock
   };
 }
 
@@ -851,21 +1153,16 @@ function saveProduct(original) {
   const products = getProducts();
 
   if (original?.id) {
-    // Edit existing
     const idx = products.findIndex(p => p.id === original.id);
-    if (idx !== -1) {
-      data.id = original.id;
-      products[idx] = data;
-    }
+    if (idx !== -1) { data.id = original.id; products[idx] = data; }
   } else {
-    // New product
     data.id = generateId();
     products.push(data);
   }
 
   saveProducts(products);
   showToast(original?.id ? 'Producto actualizado correctamente' : 'Producto creado correctamente');
-  navigateTo('products');
+  goBack();
 }
 
 // ── Page Editor ──────────────────────────────────────────────
@@ -957,8 +1254,8 @@ function renderPageEdit(page) {
   if (titleEl) titleEl.textContent = `Editar: ${page.title}`;
 
   // Back
-  qs('#btn-back-pages')?.addEventListener('click', () => navigateTo('pages'));
-  qs('#btn-cancel-page')?.addEventListener('click', () => navigateTo('pages'));
+  qs('#btn-back-pages')?.addEventListener('click', () => goBack());
+  qs('#btn-cancel-page')?.addEventListener('click', () => goBack());
 
   // Save
   qs('#page-form')?.addEventListener('submit', (e) => {
@@ -979,7 +1276,7 @@ function renderPageEdit(page) {
 
     savePages(pages);
     showToast('Página actualizada correctamente');
-    navigateTo('pages');
+    goBack();
   });
 }
 
@@ -1155,6 +1452,304 @@ function stripHtml(html) {
   return tmp.textContent || tmp.innerText || '';
 }
 
+// ── Site Content Editor ──────────────────────────────────────
+
+function renderSiteContent() {
+  const container = qs('#section-site-content');
+  if (!container) return;
+  const sc = getSiteContent();
+
+  container.innerHTML = `
+    <div class="cms-table-toolbar">
+      <div class="cms-table-info">Edita el contenido visible en la tienda</div>
+    </div>
+    ${siteContentNavAccordion(sc)}
+    ${siteContentHeroAccordion(sc)}
+    ${siteContentSectionsAccordion(sc)}
+    ${siteContentTestimonialsAccordion(sc)}
+    ${siteContentFooterAccordion(sc)}
+    <div class="cms-save-bar">
+      <button type="button" class="cms-btn cms-btn--primary" id="btn-save-site-content">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Guardar Contenido
+      </button>
+    </div>
+  `;
+
+  qsa('.cms-accordion__header').forEach(h => h.addEventListener('click', () => h.parentElement.classList.toggle('is-collapsed')));
+  bindNavLinksEvents();
+  bindTestimonialEvents();
+  bindFooterLinksEvents();
+  bindPaymentBadgesEvents();
+
+  qs('#sc-hero-image-url')?.addEventListener('input', function() {
+    const p = qs('#sc-hero-image-preview');
+    if (p) { p.src = this.value.trim(); p.style.display = this.value.trim() ? 'block' : 'none'; }
+  });
+
+  qs('#btn-save-site-content')?.addEventListener('click', saveSiteContentHandler);
+}
+
+function acc(title, body, collapsed = true) {
+  return `<div class="cms-accordion ${collapsed ? 'is-collapsed' : ''}"><button type="button" class="cms-accordion__header"><span>${title}</span><svg class="cms-accordion__chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="cms-accordion__body">${body}</div></div>`;
+}
+
+function siteContentNavAccordion(sc) {
+  const linksHTML = sc.navLinks.map((l, i) => `
+    <div class="cms-link-row" data-nav-idx="${i}">
+      <div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Etiqueta</label><input type="text" class="cms-form-input sc-nav-label" value="${escHtml(l.label)}"></div>
+      <div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Enlace</label><input type="text" class="cms-form-input sc-nav-href" value="${escHtml(l.href)}"></div>
+      <button type="button" class="cms-table__action-btn cms-table__action-btn--danger" data-remove-nav="${i}" style="margin-bottom:2px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </div>`).join('');
+  return acc('Marca / Navegación', `
+    <div class="cms-form-group"><label>Nombre de la Tienda</label><input type="text" class="cms-form-input" id="sc-site-name" value="${escHtml(sc.siteName)}"></div>
+    <div class="cms-form-group"><label>Enlaces de Navegación</label><div id="sc-nav-links" style="display:flex;flex-direction:column;gap:var(--space-sm);margin-top:var(--space-sm);">${linksHTML}</div>
+      <button type="button" class="cms-btn cms-btn--outline cms-btn--sm" id="btn-add-nav-link" style="margin-top:var(--space-sm);"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Agregar enlace</button>
+    </div>`, false);
+}
+
+function siteContentHeroAccordion(sc) {
+  return acc('Hero', `
+    <div class="cms-form-row">
+      <div class="cms-form-group"><label>Eyebrow</label><input type="text" class="cms-form-input" id="sc-hero-eyebrow" value="${escHtml(sc.heroEyebrow)}"></div>
+      <div class="cms-form-group"><label>Texto CTA</label><input type="text" class="cms-form-input" id="sc-hero-cta" value="${escHtml(sc.heroCtaText)}"></div>
+    </div>
+    <div class="cms-form-row">
+      <div class="cms-form-group"><label>Título (parte 1)</label><input type="text" class="cms-form-input" id="sc-hero-title" value="${escHtml(sc.heroTitle)}"></div>
+      <div class="cms-form-group"><label>Título (acento)</label><input type="text" class="cms-form-input" id="sc-hero-title-accent" value="${escHtml(sc.heroTitleAccent)}"></div>
+    </div>
+    <div class="cms-form-group"><label>Subtítulo</label><textarea class="cms-form-textarea" id="sc-hero-subtitle" rows="2">${escHtml(sc.heroSubtitle)}</textarea></div>
+    <div class="cms-form-group"><label>URL Imagen Hero</label><input type="url" class="cms-form-input" id="sc-hero-image-url" value="${escHtml(sc.heroImageUrl)}"><img id="sc-hero-image-preview" src="${escHtml(sc.heroImageUrl)}" alt="Preview" style="margin-top:var(--space-sm);width:120px;height:80px;object-fit:cover;border-radius:var(--radius-sm);display:${sc.heroImageUrl ? 'block' : 'none'};"></div>
+    <div class="cms-form-row">
+      <div class="cms-form-group"><label>Estadística 1</label><input type="text" class="cms-form-input" id="sc-hero-stat1" value="${escHtml(sc.heroStat1)}"></div>
+      <div class="cms-form-group"><label>Estadística 2</label><input type="text" class="cms-form-input" id="sc-hero-stat2" value="${escHtml(sc.heroStat2)}"></div>
+    </div>
+    <div class="cms-form-group"><label>Estadística 3</label><input type="text" class="cms-form-input" id="sc-hero-stat3" value="${escHtml(sc.heroStat3)}"></div>`);
+}
+
+function siteContentSectionsAccordion(sc) {
+  return acc('Secciones Home', `
+    <div style="display:flex;flex-direction:column;gap:var(--space-lg);">
+      <div><h4 style="font-size:var(--fs-xs);font-weight:600;color:var(--color-text-muted);margin-bottom:var(--space-sm);">Categorías</h4>
+        <div class="cms-form-row"><div class="cms-form-group"><label>Eyebrow</label><input type="text" class="cms-form-input" id="sc-categories-eyebrow" value="${escHtml(sc.categoriesEyebrow)}"></div><div class="cms-form-group"><label>Título</label><input type="text" class="cms-form-input" id="sc-categories-title" value="${escHtml(sc.categoriesTitle)}"></div></div>
+        <div class="cms-form-group"><label>Subtítulo</label><textarea class="cms-form-textarea" id="sc-categories-subtitle" rows="2">${escHtml(sc.categoriesSubtitle)}</textarea></div>
+      </div>
+      <div style="border-top:1px solid var(--color-border);padding-top:var(--space-md);"><h4 style="font-size:var(--fs-xs);font-weight:600;color:var(--color-text-muted);margin-bottom:var(--space-sm);">Destacados</h4>
+        <div class="cms-form-row"><div class="cms-form-group"><label>Eyebrow</label><input type="text" class="cms-form-input" id="sc-featured-eyebrow" value="${escHtml(sc.featuredEyebrow)}"></div><div class="cms-form-group"><label>Título</label><input type="text" class="cms-form-input" id="sc-featured-title" value="${escHtml(sc.featuredTitle)}"></div></div>
+      </div>
+      <div style="border-top:1px solid var(--color-border);padding-top:var(--space-md);"><h4 style="font-size:var(--fs-xs);font-weight:600;color:var(--color-text-muted);margin-bottom:var(--space-sm);">Producto Destacado</h4>
+        <div class="cms-form-row"><div class="cms-form-group"><label>Eyebrow</label><input type="text" class="cms-form-input" id="sc-showcase-eyebrow" value="${escHtml(sc.showcaseEyebrow)}"></div><div class="cms-form-group"><label>ID Producto</label><input type="number" class="cms-form-input" id="sc-showcase-product-id" value="${sc.showcaseProductId}" min="1"></div></div>
+      </div>
+      <div style="border-top:1px solid var(--color-border);padding-top:var(--space-md);"><h4 style="font-size:var(--fs-xs);font-weight:600;color:var(--color-text-muted);margin-bottom:var(--space-sm);">Nuestra Historia</h4>
+        <div class="cms-form-row"><div class="cms-form-group"><label>Eyebrow</label><input type="text" class="cms-form-input" id="sc-timeline-eyebrow" value="${escHtml(sc.timelineEyebrow)}"></div><div class="cms-form-group"><label>Título</label><input type="text" class="cms-form-input" id="sc-timeline-title" value="${escHtml(sc.timelineTitle)}"></div></div>
+      </div>
+      <div style="border-top:1px solid var(--color-border);padding-top:var(--space-md);"><h4 style="font-size:var(--fs-xs);font-weight:600;color:var(--color-text-muted);margin-bottom:var(--space-sm);">Newsletter</h4>
+        <div class="cms-form-row"><div class="cms-form-group"><label>Eyebrow</label><input type="text" class="cms-form-input" id="sc-newsletter-eyebrow" value="${escHtml(sc.newsletterEyebrow)}"></div><div class="cms-form-group"><label>Título</label><input type="text" class="cms-form-input" id="sc-newsletter-title" value="${escHtml(sc.newsletterTitle)}"></div></div>
+        <div class="cms-form-group"><label>Subtítulo</label><textarea class="cms-form-textarea" id="sc-newsletter-subtitle" rows="2">${escHtml(sc.newsletterSubtitle)}</textarea></div>
+        <div class="cms-form-group"><label>Texto Botón</label><input type="text" class="cms-form-input" id="sc-newsletter-cta" value="${escHtml(sc.newsletterCtaText)}"></div>
+      </div>
+    </div>`);
+}
+
+function siteContentTestimonialsAccordion(sc) {
+  const cardsHTML = sc.testimonials.map((t, i) => `
+    <div class="cms-testimonial-card" data-tidx="${i}">
+      <img class="cms-testimonial-card__photo" src="${escHtml(t.photo)}" alt="${escHtml(t.name)}" onerror="this.src=''">
+      <div class="cms-testimonial-card__info">
+        <div class="cms-form-row" style="margin-bottom:var(--space-sm);">
+          <div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Nombre</label><input type="text" class="cms-form-input sc-testi-name" value="${escHtml(t.name)}"></div>
+          <div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Rol</label><input type="text" class="cms-form-input sc-testi-role" value="${escHtml(t.role)}"></div>
+        </div>
+        <div class="cms-form-row" style="margin-bottom:var(--space-sm);">
+          <div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Foto URL</label><input type="url" class="cms-form-input sc-testi-photo" value="${escHtml(t.photo)}"></div>
+          <div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Rating</label><select class="cms-form-select sc-testi-rating">${[5,4.5,4,3.5,3,2,1,0].map(v => `<option value="${v}" ${v === t.rating ? 'selected' : ''}>${v}</option>`).join('')}</select></div>
+        </div>
+        <div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Texto</label><textarea class="cms-form-textarea sc-testi-text" rows="2">${escHtml(t.text)}</textarea></div>
+      </div>
+      <button type="button" class="cms-table__action-btn cms-table__action-btn--danger" data-remove-testi="${i}"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </div>`).join('');
+
+  return acc('Testimonios', `
+    <div class="cms-form-row" style="margin-bottom:var(--space-md);"><div class="cms-form-group"><label>Eyebrow</label><input type="text" class="cms-form-input" id="sc-testimonials-eyebrow" value="${escHtml(sc.testimonialsEyebrow)}"></div><div class="cms-form-group"><label>Título</label><input type="text" class="cms-form-input" id="sc-testimonials-title" value="${escHtml(sc.testimonialsTitle)}"></div></div>
+    <div class="cms-testimonial-list" id="sc-testimonials-list">${cardsHTML}</div>
+    <button type="button" class="cms-btn cms-btn--outline cms-btn--sm" id="btn-add-testimonial" style="margin-top:var(--space-md);"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Agregar testimonio</button>`);
+}
+
+function siteContentFooterAccordion(sc) {
+  const tiendaLinks = sc.footerTiendaLinks.map((l, i) => `
+    <div class="cms-link-row" data-ft-idx="${i}">
+      <div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Etiqueta</label><input type="text" class="cms-form-input sc-ft-label" value="${escHtml(l.label)}"></div>
+      <div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Enlace</label><input type="text" class="cms-form-input sc-ft-href" value="${escHtml(l.href)}"></div>
+      <button type="button" class="cms-table__action-btn cms-table__action-btn--danger" data-remove-ft="${i}" style="margin-bottom:2px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </div>`).join('');
+
+  const ayudaLinks = sc.footerAyudaLinks.map((l, i) => `
+    <div class="cms-link-row" data-fa-idx="${i}">
+      <div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Etiqueta</label><input type="text" class="cms-form-input sc-fa-label" value="${escHtml(l.label)}"></div>
+      <div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Enlace</label><input type="text" class="cms-form-input sc-fa-href" value="${escHtml(l.href)}"></div>
+      <button type="button" class="cms-table__action-btn cms-table__action-btn--danger" data-remove-fa="${i}" style="margin-bottom:2px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </div>`).join('');
+
+  return acc('Footer', `
+    <div class="cms-form-group"><label>Descripción</label><textarea class="cms-form-textarea" id="sc-footer-desc" rows="2">${escHtml(sc.footerDescription)}</textarea></div>
+    <div class="cms-form-row">
+      <div class="cms-form-group"><label>Facebook URL</label><input type="url" class="cms-form-input" id="sc-footer-facebook" value="${escHtml(sc.footerSocial.facebook)}"></div>
+      <div class="cms-form-group"><label>Instagram URL</label><input type="url" class="cms-form-input" id="sc-footer-instagram" value="${escHtml(sc.footerSocial.instagram)}"></div>
+      <div class="cms-form-group"><label>Twitter URL</label><input type="url" class="cms-form-input" id="sc-footer-twitter" value="${escHtml(sc.footerSocial.twitter)}"></div>
+    </div>
+    <div class="cms-form-group"><label>${escHtml(sc.footerTiendaTitle)} — Enlaces</label><div id="sc-footer-tienda-links" style="display:flex;flex-direction:column;gap:var(--space-sm);margin-top:var(--space-sm);">${tiendaLinks}</div>
+      <button type="button" class="cms-btn cms-btn--outline cms-btn--sm" id="btn-add-ft-link" style="margin-top:var(--space-sm);"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Agregar enlace</button>
+    </div>
+    <div class="cms-form-group"><label>${escHtml(sc.footerAyudaTitle)} — Enlaces</label><div id="sc-footer-ayuda-links" style="display:flex;flex-direction:column;gap:var(--space-sm);margin-top:var(--space-sm);">${ayudaLinks}</div>
+      <button type="button" class="cms-btn cms-btn--outline cms-btn--sm" id="btn-add-fa-link" style="margin-top:var(--space-sm);"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Agregar enlace</button>
+    </div>
+    <div class="cms-form-group"><label>Texto de Pagos (separado por coma)</label><input type="text" class="cms-form-input" id="sc-footer-pagos" value="${escHtml(sc.footerPagosBadges.join(', '))}"></div>
+    <div class="cms-form-group"><label>Copyright</label><input type="text" class="cms-form-input" id="sc-footer-copyright" value="${escHtml(sc.footerCopyright)}"></div>`);
+}
+
+function bindNavLinksEvents() {
+  qs('#btn-add-nav-link')?.addEventListener('click', () => {
+    const list = qs('#sc-nav-links');
+    const i = list.children.length;
+    list.insertAdjacentHTML('beforeend', `<div class="cms-link-row" data-nav-idx="${i}"><div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Etiqueta</label><input type="text" class="cms-form-input sc-nav-label" value=""></div><div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Enlace</label><input type="text" class="cms-form-input sc-nav-href" value=""></div><button type="button" class="cms-table__action-btn cms-table__action-btn--danger" data-remove-nav="${i}" style="margin-bottom:2px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>`);
+    rebindRemoveNav();
+  });
+  rebindRemoveNav();
+}
+
+function rebindRemoveNav() {
+  qsa('[data-remove-nav]').forEach(btn => btn.onclick = () => {
+    btn.closest('[data-nav-idx]')?.remove();
+    qsa('#sc-nav-links [data-nav-idx]').forEach((el, i) => { el.dataset.navIdx = i; const b = el.querySelector('[data-remove-nav]'); if (b) b.dataset.removeNav = i; });
+  });
+}
+
+function bindTestimonialEvents() {
+  qs('#btn-add-testimonial')?.addEventListener('click', () => {
+    const list = qs('#sc-testimonials-list');
+    const i = list.children.length;
+    list.insertAdjacentHTML('beforeend', `<div class="cms-testimonial-card" data-tidx="${i}"><img class="cms-testimonial-card__photo" src="" alt="" onerror="this.src=''"><div class="cms-testimonial-card__info"><div class="cms-form-row" style="margin-bottom:var(--space-sm);"><div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Nombre</label><input type="text" class="cms-form-input sc-testi-name" value=""></div><div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Rol</label><input type="text" class="cms-form-input sc-testi-role" value=""></div></div><div class="cms-form-row" style="margin-bottom:var(--space-sm);"><div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Foto URL</label><input type="url" class="cms-form-input sc-testi-photo" value=""></div><div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Rating</label><select class="cms-form-select sc-testi-rating">${[5,4.5,4,3.5,3,2,1,0].map(v => `<option value="${v}">${v}</option>`).join('')}</select></div></div><div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Texto</label><textarea class="cms-form-textarea sc-testi-text" rows="2"></textarea></div></div><button type="button" class="cms-table__action-btn cms-table__action-btn--danger" data-remove-testi="${i}"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>`);
+    rebindRemoveTesti();
+  });
+  rebindRemoveTesti();
+}
+
+function rebindRemoveTesti() {
+  qsa('[data-remove-testi]').forEach(btn => btn.onclick = () => {
+    btn.closest('[data-tidx]')?.remove();
+    qsa('#sc-testimonials-list [data-tidx]').forEach((el, i) => { el.dataset.tidx = i; const b = el.querySelector('[data-remove-testi]'); if (b) b.dataset.removeTesti = i; });
+  });
+}
+
+function bindFooterLinksEvents() {
+  qs('#btn-add-ft-link')?.addEventListener('click', () => {
+    const list = qs('#sc-footer-tienda-links');
+    const i = list.children.length;
+    list.insertAdjacentHTML('beforeend', `<div class="cms-link-row" data-ft-idx="${i}"><div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Etiqueta</label><input type="text" class="cms-form-input sc-ft-label" value=""></div><div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Enlace</label><input type="text" class="cms-form-input sc-ft-href" value=""></div><button type="button" class="cms-table__action-btn cms-table__action-btn--danger" data-remove-ft="${i}" style="margin-bottom:2px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>`);
+    rebindRemoveFt();
+  });
+  rebindRemoveFt();
+
+  qs('#btn-add-fa-link')?.addEventListener('click', () => {
+    const list = qs('#sc-footer-ayuda-links');
+    const i = list.children.length;
+    list.insertAdjacentHTML('beforeend', `<div class="cms-link-row" data-fa-idx="${i}"><div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Etiqueta</label><input type="text" class="cms-form-input sc-fa-label" value=""></div><div class="cms-form-group" style="gap:4px;"><label style="font-size:var(--fs-xs);">Enlace</label><input type="text" class="cms-form-input sc-fa-href" value=""></div><button type="button" class="cms-table__action-btn cms-table__action-btn--danger" data-remove-fa="${i}" style="margin-bottom:2px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>`);
+    rebindRemoveFa();
+  });
+  rebindRemoveFa();
+}
+
+function rebindRemoveFt() {
+  qsa('[data-remove-ft]').forEach(btn => btn.onclick = () => {
+    btn.closest('[data-ft-idx]')?.remove();
+    qsa('#sc-footer-tienda-links [data-ft-idx]').forEach((el, i) => { el.dataset.ftIdx = i; const b = el.querySelector('[data-remove-ft]'); if (b) b.dataset.removeFt = i; });
+  });
+}
+
+function rebindRemoveFa() {
+  qsa('[data-remove-fa]').forEach(btn => btn.onclick = () => {
+    btn.closest('[data-fa-idx]')?.remove();
+    qsa('#sc-footer-ayuda-links [data-fa-idx]').forEach((el, i) => { el.dataset.faIdx = i; const b = el.querySelector('[data-remove-fa]'); if (b) b.dataset.removeFa = i; });
+  });
+}
+
+function bindPaymentBadgesEvents() {}
+
+function saveSiteContentHandler() {
+  const sc = getSiteContent();
+
+  sc.siteName = qs('#sc-site-name')?.value.trim() || sc.siteName;
+  sc.navLinks = [];
+  qsa('#sc-nav-links .cms-link-row').forEach(row => {
+    const label = row.querySelector('.sc-nav-label')?.value.trim();
+    const href = row.querySelector('.sc-nav-href')?.value.trim();
+    if (label) sc.navLinks.push({ label, href: href || '#' });
+  });
+
+  sc.heroEyebrow = qs('#sc-hero-eyebrow')?.value.trim() || sc.heroEyebrow;
+  sc.heroTitle = qs('#sc-hero-title')?.value.trim() || sc.heroTitle;
+  sc.heroTitleAccent = qs('#sc-hero-title-accent')?.value.trim() || sc.heroTitleAccent;
+  sc.heroSubtitle = qs('#sc-hero-subtitle')?.value.trim() || sc.heroSubtitle;
+  sc.heroCtaText = qs('#sc-hero-cta')?.value.trim() || sc.heroCtaText;
+  sc.heroImageUrl = qs('#sc-hero-image-url')?.value.trim() || sc.heroImageUrl;
+  sc.heroStat1 = qs('#sc-hero-stat1')?.value.trim() || sc.heroStat1;
+  sc.heroStat2 = qs('#sc-hero-stat2')?.value.trim() || sc.heroStat2;
+  sc.heroStat3 = qs('#sc-hero-stat3')?.value.trim() || sc.heroStat3;
+
+  sc.categoriesEyebrow = qs('#sc-categories-eyebrow')?.value.trim() || sc.categoriesEyebrow;
+  sc.categoriesTitle = qs('#sc-categories-title')?.value.trim() || sc.categoriesTitle;
+  sc.categoriesSubtitle = qs('#sc-categories-subtitle')?.value.trim() || sc.categoriesSubtitle;
+  sc.featuredEyebrow = qs('#sc-featured-eyebrow')?.value.trim() || sc.featuredEyebrow;
+  sc.featuredTitle = qs('#sc-featured-title')?.value.trim() || sc.featuredTitle;
+  sc.showcaseEyebrow = qs('#sc-showcase-eyebrow')?.value.trim() || sc.showcaseEyebrow;
+  sc.showcaseProductId = parseInt(qs('#sc-showcase-product-id')?.value, 10) || 1;
+  sc.timelineEyebrow = qs('#sc-timeline-eyebrow')?.value.trim() || sc.timelineEyebrow;
+  sc.timelineTitle = qs('#sc-timeline-title')?.value.trim() || sc.timelineTitle;
+
+  sc.newsletterEyebrow = qs('#sc-newsletter-eyebrow')?.value.trim() || sc.newsletterEyebrow;
+  sc.newsletterTitle = qs('#sc-newsletter-title')?.value.trim() || sc.newsletterTitle;
+  sc.newsletterSubtitle = qs('#sc-newsletter-subtitle')?.value.trim() || sc.newsletterSubtitle;
+  sc.newsletterCtaText = qs('#sc-newsletter-cta')?.value.trim() || sc.newsletterCtaText;
+
+  sc.testimonialsEyebrow = qs('#sc-testimonials-eyebrow')?.value.trim() || sc.testimonialsEyebrow;
+  sc.testimonialsTitle = qs('#sc-testimonials-title')?.value.trim() || sc.testimonialsTitle;
+  sc.testimonials = [];
+  qsa('#sc-testimonials-list .cms-testimonial-card').forEach(card => {
+    const name = card.querySelector('.sc-testi-name')?.value.trim();
+    if (name) {
+      sc.testimonials.push({
+        name,
+        role: card.querySelector('.sc-testi-role')?.value.trim() || '',
+        photo: card.querySelector('.sc-testi-photo')?.value.trim() || '',
+        rating: parseFloat(card.querySelector('.sc-testi-rating')?.value) || 5,
+        text: card.querySelector('.sc-testi-text')?.value.trim() || ''
+      });
+    }
+  });
+
+  sc.footerDescription = qs('#sc-footer-desc')?.value.trim() || sc.footerDescription;
+  sc.footerSocial = {
+    facebook: qs('#sc-footer-facebook')?.value.trim() || '#',
+    instagram: qs('#sc-footer-instagram')?.value.trim() || '#',
+    twitter: qs('#sc-footer-twitter')?.value.trim() || '#'
+  };
+  sc.footerTiendaLinks = [];
+  qsa('#sc-footer-tienda-links .cms-link-row').forEach(row => {
+    const label = row.querySelector('.sc-ft-label')?.value.trim();
+    if (label) sc.footerTiendaLinks.push({ label, href: row.querySelector('.sc-ft-href')?.value.trim() || '#' });
+  });
+  sc.footerAyudaLinks = [];
+  qsa('#sc-footer-ayuda-links .cms-link-row').forEach(row => {
+    const label = row.querySelector('.sc-fa-label')?.value.trim();
+    if (label) sc.footerAyudaLinks.push({ label, href: row.querySelector('.sc-fa-href')?.value.trim() || '#' });
+  });
+  sc.footerPagosBadges = (qs('#sc-footer-pagos')?.value || '').split(',').map(s => s.trim()).filter(Boolean);
+  sc.footerCopyright = qs('#sc-footer-copyright')?.value.trim() || sc.footerCopyright;
+
+  saveSiteContentData(sc);
+  showToast('Contenido del sitio guardado correctamente');
+}
+
 // ── Build CMS DOM ────────────────────────────────────────────
 
 function buildCMSLayout() {
@@ -1195,6 +1790,10 @@ function buildCMSLayout() {
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2H2v10h10V2z"/><path d="M12 12H2v10h10V12z"/><path d="M22 2h-6v6h6V2z"/><path d="M22 12h-6v10h6V12z"/></svg>
         Categorías
       </a>
+      <a href="#" class="cms-sidebar__link" data-section="site-content">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Contenido del Sitio
+      </a>
     </nav>
     <div class="cms-sidebar__footer">
       <div style="font-size:var(--fs-xs);color:rgba(255,255,255,0.4);margin-bottom:var(--space-sm);">Conectado como</div>
@@ -1223,6 +1822,7 @@ function buildCMSLayout() {
     <div class="cms-section" id="section-product-edit" style="display:none;"></div>
     <div class="cms-section" id="section-pages" style="display:none;"></div>
     <div class="cms-section" id="section-categories" style="display:none;"></div>
+    <div class="cms-section" id="section-site-content" style="display:none;"></div>
   `;
   layout.appendChild(main);
 
