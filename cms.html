@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoleStyle — CMS</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <style>@media(prefers-color-scheme:dark){html{background:#0A0A0F;color:#E8E8EC;color-scheme:dark}}[data-theme="dark"]{--color-white:#0F0F12;--color-dark:#E8E8EC;--color-bg:#0A0A0F;--color-surface:#141418;--color-surface-alt:#1C1C22;--color-surface-raised:#222228;--color-border:rgba(255,255,255,.08);--color-border-subtle:rgba(255,255,255,.04);--color-border-accent:rgba(255,107,53,.25);--color-text-primary:#F0F0F4;--color-text-secondary:#A0A0B0;--color-text-muted:#6B6B78;--color-gray-100:#1C1C22;--color-gray-200:#242428;--color-gray-300:#2C2C32;--color-gray-400:#3A3A42;--color-gray-500:#6B6B78;--color-gray-600:#A0A0B0;--color-accent-soft:rgba(255,107,53,.12);--shadow-xs:0 1px 2px rgba(0,0,0,.3);--shadow-sm:0 1px 3px rgba(0,0,0,.4),0 1px 2px rgba(0,0,0,.3);--shadow-card:0 4px 16px rgba(0,0,0,.4),0 1px 4px rgba(0,0,0,.3);--shadow-hover:0 12px 32px rgba(0,0,0,.5),0 4px 8px rgba(0,0,0,.3);--shadow-accent:0 8px 24px rgba(255,107,53,.25);--shadow-accent-lg:0 12px 32px rgba(255,107,53,.35);--shadow-glow:0 0 24px rgba(255,107,53,.2);background:#0A0A0F!important;color:#E8E8EC!important;color-scheme:dark}[data-theme="dark"] body{background:#0A0A0F!important}[data-theme="dark"] .site-header{background:rgba(15,15,18,.88)!important;border-bottom-color:rgba(255,255,255,.06);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2)}[data-theme="dark"] .hero{background:linear-gradient(135deg,#0A0A0F,#141418 40%,#0F0F12)!important}[data-theme="dark"] .section--alt{background-color:#141418!important}[data-theme="dark"] .newsletter__inner{background:linear-gradient(135deg,rgba(255,107,53,.10),#141418)!important;border-color:rgba(255,255,255,.06)}[data-theme="dark"] .site-footer{background:#08080C!important}[data-theme="dark"] .filters-sidebar{background:#141418!important}[data-theme="dark"] .cart-drawer{background:#141418!important}</style>
+  <script>(function(){var t=localStorage.getItem('solestyle_theme');var d=window.matchMedia('(prefers-color-scheme:dark)').matches;if(t==='dark'||(t===null&&d)){document.documentElement.setAttribute('data-theme','dark');document.documentElement.style.cssText='background:#0A0A0F!important;color:#E8E8EC!important;color-scheme:dark'}})();</script>
+  <link rel="stylesheet" href="css/features/loading.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/cms.css">
+</head>
+<body>
+  <div class="loading-overlay" id="loadingOverlay">
+    <canvas class="loading-canvas" id="loadingCanvas"></canvas>
+    <div class="loading-content">
+      <div class="loading-logo">Sole<span class="loading-logo-accent">Style</span></div>
+      <div class="loading-bar-track"><div class="loading-bar-fill"></div></div>
+    </div>
+  </div>
+
+  <div class="cms-layout">
+    <!-- Sidebar -->
+    <aside class="cms-sidebar" id="cmsSidebar">
+      <div class="cms-sidebar__logo">
+        <a href="index.html" class="cms-sidebar__logo-text" aria-label="SoleStyle, inicio">Sole<span class="cms-sidebar__logo-accent">Style</span></a>
+        <span class="cms-sidebar__logo-sub">CMS</span>
+      </div>
+
+      <nav class="cms-sidebar__nav" aria-label="Navegación del CMS">
+        <a href="#" class="cms-sidebar__link is-active" data-section="dashboard">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="cms-sidebar__link" data-section="products">
+          <i data-lucide="package"></i>
+          <span>Productos</span>
+        </a>
+        <a href="#" class="cms-sidebar__link" data-section="pages">
+          <i data-lucide="file-text"></i>
+          <span>Páginas</span>
+        </a>
+        <a href="#" class="cms-sidebar__link" data-section="categories">
+          <i data-lucide="tag"></i>
+          <span>Categorías</span>
+        </a>
+      </nav>
+
+      <div class="cms-sidebar__footer">
+        <a href="index.html" class="cms-sidebar__logout">
+          <i data-lucide="external-link"></i>
+          <span>Ver tienda</span>
+        </a>
+        <button class="cms-sidebar__logout" id="cmsLogout">
+          <i data-lucide="log-out"></i>
+          <span>Cerrar sesión</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Sidebar overlay for mobile -->
+    <div class="cms-sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Mobile toggle -->
+    <button class="cms-sidebar-toggle" id="sidebarToggle" aria-label="Abrir menú lateral">
+      <i data-lucide="menu"></i>
+    </button>
+
+    <!-- Main content -->
+    <main class="cms-main">
+      <!-- Header -->
+      <header class="cms-header">
+        <h1 class="cms-header__title" id="cmsPageTitle">Dashboard</h1>
+        <span class="cms-header__user" id="cmsUser">admin</span>
+      </header>
+
+      <!-- Content area -->
+      <div class="cms-content">
+        <!-- Dashboard -->
+        <section id="section-dashboard" class="is-active">
+          <div id="cmsStats"></div>
+          <div class="cms-recent">
+            <h2>Productos recientes</h2>
+            <div id="recentProductsTable"></div>
+          </div>
+        </section>
+
+        <!-- Products -->
+        <section id="section-products" hidden>
+          <div class="cms-table-toolbar">
+            <h2>Productos</h2>
+            <button class="cms-btn cms-btn--primary" id="addProductBtn">
+              <i data-lucide="plus"></i>
+              <span>Nuevo producto</span>
+            </button>
+          </div>
+          <div class="cms-search">
+            <i data-lucide="search" class="cms-search__icon"></i>
+            <input type="text" class="cms-search__input" id="productSearch" placeholder="Buscar productos...">
+          </div>
+          <div id="productsTable"></div>
+        </section>
+
+        <!-- Product edit -->
+        <section id="section-product-edit" hidden style="display:none;">
+          <div class="cms-table-toolbar">
+            <h2 id="productEditTitle">Editar producto</h2>
+            <button class="cms-btn cms-btn--ghost" id="backToProducts">
+              <i data-lucide="arrow-left"></i>
+              <span>Volver</span>
+            </button>
+          </div>
+          <form id="productForm" class="cms-form"></form>
+        </section>
+
+        <!-- Pages -->
+        <section id="section-pages" hidden>
+          <div class="cms-table-toolbar">
+            <h2>Contenido de páginas</h2>
+          </div>
+          <div id="pagesList"></div>
+          <div id="pageEditor" hidden>
+            <div class="cms-table-toolbar">
+              <h2 id="pageEditorTitle">Editar página</h2>
+              <button class="cms-btn cms-btn--ghost" id="backToPages">
+                <i data-lucide="arrow-left"></i>
+                <span>Volver</span>
+              </button>
+            </div>
+            <form id="pageForm" class="cms-form"></form>
+          </div>
+        </section>
+
+        <!-- Categories -->
+        <section id="section-categories" hidden>
+          <div class="cms-table-toolbar">
+            <h2>Categorías</h2>
+            <button class="cms-btn cms-btn--primary" id="addCategoryBtn">
+              <i data-lucide="plus"></i>
+              <span>Nueva categoría</span>
+            </button>
+          </div>
+          <div id="categoriesTable"></div>
+        </section>
+      </div>
+
+      <!-- Toast -->
+      <div class="cms-toast" id="cmsToast" role="status" aria-live="polite"></div>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="js/modules/loading.js"></script>
+  <script type="module" src="js/modules/cms.js"></script>
+</body>
+</html>
