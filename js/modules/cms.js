@@ -187,6 +187,7 @@ function saveSiteContentData(data) {
 function seedSiteContent() {
   return {
     siteName: 'SoleStyle',
+    accentColor: '#FF6B35',
     navLinks: [
       { label: 'Inicio', href: 'index.html' },
       { label: 'Tienda', href: 'tienda.html' },
@@ -1487,6 +1488,21 @@ function renderSiteContent() {
     if (p) { p.src = this.value.trim(); p.style.display = this.value.trim() ? 'block' : 'none'; }
   });
 
+  const colorPicker = qs('#sc-accent-color');
+  const colorHex = qs('#sc-accent-color-hex');
+  if (colorPicker && colorHex) {
+    colorPicker.addEventListener('input', function() { colorHex.value = this.value; liveAccentPreview(this.value); });
+    colorHex.addEventListener('input', function() {
+      const v = this.value.trim();
+      if (/^#[0-9a-fA-F]{6}$/.test(v)) { colorPicker.value = v; liveAccentPreview(v); }
+    });
+    colorHex.addEventListener('blur', function() {
+      let v = this.value.trim();
+      if (/^#[0-9a-fA-F]{3}$/.test(v)) v = '#' + v[1]+v[1]+v[2]+v[2]+v[3]+v[3];
+      if (/^#[0-9a-fA-F]{6}$/.test(v)) { this.value = v; colorPicker.value = v; liveAccentPreview(v); }
+    });
+  }
+
   qs('#btn-save-site-content')?.addEventListener('click', saveSiteContentHandler);
 }
 
@@ -1502,7 +1518,10 @@ function siteContentNavAccordion(sc) {
       <button type="button" class="cms-table__action-btn cms-table__action-btn--danger" data-remove-nav="${i}" style="margin-bottom:2px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
     </div>`).join('');
   return acc('Marca / Navegación', `
-    <div class="cms-form-group"><label>Nombre de la Tienda</label><input type="text" class="cms-form-input" id="sc-site-name" value="${escHtml(sc.siteName)}"></div>
+    <div class="cms-form-row">
+      <div class="cms-form-group" style="flex:2;"><label>Nombre de la Tienda</label><input type="text" class="cms-form-input" id="sc-site-name" value="${escHtml(sc.siteName)}"></div>
+      <div class="cms-form-group" style="flex:1;min-width:140px;"><label>Color de Marca (Accent)</label><div style="display:flex;gap:var(--space-sm);align-items:center;"><input type="color" id="sc-accent-color" value="${escHtml(sc.accentColor || '#FF6B35')}" style="width:44px;height:36px;border:1px solid var(--color-border);border-radius:var(--radius-sm);cursor:pointer;padding:2px;background:var(--color-surface);"><input type="text" class="cms-form-input" id="sc-accent-color-hex" value="${escHtml(sc.accentColor || '#FF6B35')}" style="flex:1;font-family:monospace;"></div></div>
+    </div>
     <div class="cms-form-group"><label>Enlaces de Navegación</label><div id="sc-nav-links" style="display:flex;flex-direction:column;gap:var(--space-sm);margin-top:var(--space-sm);">${linksHTML}</div>
       <button type="button" class="cms-btn cms-btn--outline cms-btn--sm" id="btn-add-nav-link" style="margin-top:var(--space-sm);"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Agregar enlace</button>
     </div>`, false);
@@ -1679,6 +1698,7 @@ function saveSiteContentHandler() {
   const sc = getSiteContent();
 
   sc.siteName = qs('#sc-site-name')?.value.trim() || sc.siteName;
+  sc.accentColor = qs('#sc-accent-color')?.value.trim() || sc.accentColor || '#FF6B35';
   sc.navLinks = [];
   qsa('#sc-nav-links .cms-link-row').forEach(row => {
     const label = row.querySelector('.sc-nav-label')?.value.trim();
@@ -1870,6 +1890,42 @@ function init() {
 
   // Initial render
   renderDashboard();
+
+  applyAccentColorCMS();
+}
+
+function applyAccentColorCMS() {
+  const existing = document.querySelector('[data-accent-override]');
+  if (existing) existing.remove();
+  try {
+    const sc = getSiteContent();
+    const hex = sc.accentColor;
+    if (!hex || hex === '#FF6B35') return;
+    injectAccentStyle(hex);
+  } catch (_) {}
+}
+
+function liveAccentPreview(hex) {
+  if (!hex || hex === '#FF6B35') {
+    const existing = document.querySelector('[data-accent-override]');
+    if (existing) existing.remove();
+    return;
+  }
+  injectAccentStyle(hex);
+}
+
+function injectAccentStyle(hex) {
+  const existing = document.querySelector('[data-accent-override]');
+  if (existing) existing.remove();
+  const h = hex.replace('#', '');
+  const bigint = parseInt(h.length === 3 ? h.split('').map(c => c + c).join('') : h, 16);
+  const r = (bigint >> 16) & 255, g = (bigint >> 8) & 255, b = bigint & 255;
+  const f = 0.88;
+  const dark = `rgb(${Math.round(r*f)},${Math.round(g*f)},${Math.round(b*f)})`;
+  const tag = document.createElement('style');
+  tag.setAttribute('data-accent-override', '');
+  tag.textContent = `:root{--color-accent:${hex}!important;--color-accent-dark:${dark}!important;--color-accent-soft:rgba(${r},${g},${b},0.06)!important;--color-border-accent:rgba(${r},${g},${b},0.3)!important;--shadow-accent:0 8px 24px rgba(${r},${g},${b},0.30)!important;--shadow-accent-lg:0 12px 32px rgba(${r},${g},${b},0.40)!important;--shadow-glow:0 0 20px rgba(${r},${g},${b},0.15)!important}[data-theme="dark"]{--color-accent-soft:rgba(${r},${g},${b},0.12)!important;--color-border-accent:rgba(${r},${g},${b},0.25)!important;--shadow-accent:0 8px 24px rgba(${r},${g},${b},0.25)!important;--shadow-accent-lg:0 12px 32px rgba(${r},${g},${b},0.35)!important;--shadow-glow:0 0 24px rgba(${r},${g},${b},0.2)!important}`;
+  document.head.appendChild(tag);
 }
 
 // Run on DOM ready

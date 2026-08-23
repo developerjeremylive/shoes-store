@@ -608,6 +608,55 @@ function initFavoritos() {
   favorites.render();
 }
 
+// ── Accent Color Override ─────────────────────────────────────
+
+function hexToRgb(hex) {
+  const h = hex.replace('#', '');
+  const bigint = parseInt(h.length === 3 ? h.split('').map(c => c + c).join('') : h, 16);
+  return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
+}
+
+function darkenHex(hex, amount = 0.12) {
+  const { r, g, b } = hexToRgb(hex);
+  const f = 1 - amount;
+  return `rgb(${Math.round(r * f)}, ${Math.round(g * f)}, ${Math.round(b * f)})`;
+}
+
+function applyAccentColor() {
+  try {
+    const raw = localStorage.getItem('solestyle_cms_site_content');
+    if (!raw) return;
+    const sc = JSON.parse(raw);
+    const hex = sc.accentColor;
+    if (!hex || hex === '#FF6B35') return;
+
+    const { r, g, b } = hexToRgb(hex);
+    const darkHex = darkenHex(hex, 0.12);
+
+    const css = `
+:root {
+  --color-accent: ${hex};
+  --color-accent-dark: ${darkHex};
+  --color-accent-soft: rgba(${r}, ${g}, ${b}, 0.06);
+  --color-border-accent: rgba(${r}, ${g}, ${b}, 0.3);
+  --shadow-accent: 0 8px 24px rgba(${r}, ${g}, ${b}, 0.30);
+  --shadow-accent-lg: 0 12px 32px rgba(${r}, ${g}, ${b}, 0.40);
+  --shadow-glow: 0 0 20px rgba(${r}, ${g}, ${b}, 0.15);
+}
+[data-theme="dark"] {
+  --color-accent-soft: rgba(${r}, ${g}, ${b}, 0.12);
+  --color-border-accent: rgba(${r}, ${g}, ${b}, 0.25);
+  --shadow-accent: 0 8px 24px rgba(${r}, ${g}, ${b}, 0.25);
+  --shadow-accent-lg: 0 12px 32px rgba(${r}, ${g}, ${b}, 0.35);
+  --shadow-glow: 0 0 24px rgba(${r}, ${g}, ${b}, 0.2);
+}`;
+    const tag = document.createElement('style');
+    tag.setAttribute('data-accent-override', '');
+    tag.textContent = css;
+    document.head.appendChild(tag);
+  } catch (_) {}
+}
+
 // Arranque según la página actual.
 if (page === 'home') initHome();
 else if (page === 'tienda') initTienda();
