@@ -608,6 +608,30 @@ function initFavoritos() {
   favorites.render();
 }
 
+function initPage() {
+  try {
+    const pages = JSON.parse(localStorage.getItem('solestyle_cms_pages') || '[]');
+    const pageId = page === 'about' ? 'about' : 'contact';
+    const pageData = pages.find(p => p.id === pageId);
+    
+    if (pageData) {
+      document.querySelectorAll('[data-cms]').forEach(el => {
+        const key = el.getAttribute('data-cms');
+        const section = pageData.sections.find(s => s.key === key);
+        if (section) {
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+            el.value = section.content;
+          } else {
+            el.textContent = section.content;
+          }
+        }
+      });
+    }
+  } catch (e) {}
+  
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
 // ── Accent Color Override ─────────────────────────────────────
 
 function hexToRgb(hex) {
@@ -662,6 +686,7 @@ if (page === 'home') initHome();
 else if (page === 'tienda') initTienda();
 else if (page === 'producto') initProducto();
 else if (page === 'favoritos') initFavoritos();
+else if (page === 'about' || page === 'contact') initPage();
 
 // Features v2: se inicializan en todas las páginas.
 initCheckout();

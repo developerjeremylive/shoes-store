@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SoleStyle — Tienda de Zapatos</title>
+  <title>Sobre Nosotros — SoleStyle</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <style>@media(prefers-color-scheme:dark){html{background:#0A0A0F;color:#E8E8EC;color-scheme:dark}}[data-theme="dark"]{--color-white:#0F0F12;--color-dark:#E8E8EC;--color-bg:#0A0A0F;--color-surface:#141418;--color-surface-alt:#1C1C22;--color-surface-raised:#222228;--color-border:rgba(255,255,255,.08);--color-border-subtle:rgba(255,255,255,.04);--color-border-accent:rgba(255,107,53,.25);--color-text-primary:#F0F0F4;--color-text-secondary:#A0A0B0;--color-text-muted:#6B6B78;--color-gray-100:#1C1C22;--color-gray-200:#242428;--color-gray-300:#2C2C32;--color-gray-400:#3A3A42;--color-gray-500:#6B6B78;--color-gray-600:#A0A0B0;--color-accent-soft:rgba(255,107,53,.12);--shadow-xs:0 1px 2px rgba(0,0,0,.3);--shadow-sm:0 1px 3px rgba(0,0,0,.4),0 1px 2px rgba(0,0,0,.3);--shadow-card:0 4px 16px rgba(0,0,0,.4),0 1px 4px rgba(0,0,0,.3);--shadow-hover:0 12px 32px rgba(0,0,0,.5),0 4px 8px rgba(0,0,0,.3);--shadow-accent:0 8px 24px rgba(255,107,53,.25);--shadow-accent-lg:0 12px 32px rgba(255,107,53,.35);--shadow-glow:0 0 24px rgba(255,107,53,.2);background:#0A0A0F!important;color:#E8E8EC!important;color-scheme:dark}[data-theme="dark"] body{background:#0A0A0F!important}[data-theme="dark"] .site-header{background:rgba(15,15,18,.88)!important;border-bottom-color:rgba(255,255,255,.06);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2)}[data-theme="dark"] .hero{background:linear-gradient(135deg,#0A0A0F,#141418 40%,#0F0F12)!important}[data-theme="dark"] .section--alt{background-color:#141418!important}[data-theme="dark"] .newsletter__inner{background:linear-gradient(135deg,rgba(255,107,53,.10),#141418)!important;border-color:rgba(255,255,255,.06)}[data-theme="dark"] .site-footer{background:#08080C!important}[data-theme="dark"] .filters-sidebar{background:#141418!important}[data-theme="dark"] .cart-drawer{background:#141418!important}</style>
   <script>(function(){var t=localStorage.getItem('solestyle_theme');var d=window.matchMedia('(prefers-color-scheme:dark)').matches;if(t==='dark'||(t===null&&d)){document.documentElement.setAttribute('data-theme','dark');document.documentElement.style.cssText='background:#0A0A0F!important;color:#E8E8EC!important;color-scheme:dark'}})();</script>
@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="css/features/quickview.css">
   <link rel="stylesheet" href="css/features/reviews.css">
   <link rel="stylesheet" href="css/features/ux.css">
+  <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
   <div class="loading-overlay" id="loadingOverlay">
@@ -41,7 +42,7 @@
       <nav class="main-nav" aria-label="Navegación principal">
         <a href="index.html" class="nav-link">Inicio</a>
         <a href="tienda.html" class="nav-link">Tienda</a>
-        <a href="sobre-nosotros.html" class="nav-link">Sobre Nosotros</a>
+        <a href="sobre-nosotros.html" class="nav-link is-active">Sobre Nosotros</a>
         <a href="contacto.html" class="nav-link">Contacto</a>
       </nav>
       <div class="header-actions">
@@ -59,7 +60,7 @@
     <nav class="mobile-menu" id="mobileMenu" aria-label="Menú móvil">
       <a href="index.html" class="nav-link">Inicio</a>
       <a href="tienda.html" class="nav-link">Tienda</a>
-      <a href="sobre-nosotros.html" class="nav-link">Sobre Nosotros</a>
+      <a href="sobre-nosotros.html" class="nav-link is-active">Sobre Nosotros</a>
       <a href="contacto.html" class="nav-link">Contacto</a>
       <a href="favoritos.html" class="nav-link">Favoritos</a>
       <a href="login.html" class="nav-link">CMS</a>
@@ -83,203 +84,141 @@
     <div class="modal"><div class="modal__icon"><i data-lucide="check"></i></div><h3 class="modal__title">¡Gracias por tu compra!</h3><p class="modal__text" id="modalText">Tu pedido ha sido procesado. Te contactaremos por email.</p><div class="modal__actions"><button class="btn btn-primary" id="modalClose">Seguir comprando</button></div></div>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Background Animation Canvas -->
+  <canvas class="page-bg-canvas" id="pageBgCanvas" aria-hidden="true"></canvas>
+
   <main>
-    <section class="hero" id="hero">
-      <div class="hero-content container">
-        <div class="hero-text">
-          <p class="eyebrow">Colección 2026</p>
-          <h1 class="hero-title">Pisa <span class="hero-title__accent">Fuerte</span></h1>
-          <p class="hero-subtitle">Tecnología, diseño y comodidad en cada paso. Calzado premium hecho para moverte.</p>
-          <a href="tienda.html" class="btn btn-primary btn-lg hero-cta">Explorar Colección</a>
-          <div class="hero-stats">
-            <div class="hero-stat">
-              <i data-lucide="truck"></i>
-              <span>Envío gratis desde $2,000</span>
-            </div>
-            <div class="hero-stat">
-              <i data-lucide="rotate-ccw"></i>
-              <span>30 días de devolución</span>
-            </div>
-            <div class="hero-stat">
-              <i data-lucide="shield-check"></i>
-              <span>Garantía de 2 años</span>
-            </div>
-          </div>
+    <!-- Hero Section -->
+    <section class="page-hero" id="pageHero">
+      <div class="container">
+        <div class="page-hero__content">
+          <p class="eyebrow" data-cms="about_hero_eyebrow">Nuestra Historia</p>
+          <h1 class="page-hero__title" data-cms="about_hero_title">Pasión por el <span class="text-accent">Estilo</span></h1>
+          <p class="page-hero__subtitle" data-cms="about_hero_subtitle">Conoce la historia detrás de cada zapatilla que creamos.</p>
         </div>
-        <div class="hero-image">
-          <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=900&auto=format&fit=crop&q=80" alt="Zapatilla Nike roja" class="hero-image__img" loading="eager" width="900" height="600">
-          <div class="hero-image__glow"></div>
-        </div>
-      </div>
-      <div class="hero-scroll-hint">
-        <i data-lucide="chevron-down"></i>
-        <span>Scroll</span>
       </div>
     </section>
-    <section class="section" id="colecciones">
+
+    <!-- Mission Section -->
+    <section class="section page-section" id="mision">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">Categorías</p>
-          <h2 class="section-title">Encuentra tu estilo</h2>
-          <p class="section-subtitle">Explora nuestras colecciones diseñadas para cada ritmo de vida.</p>
+          <p class="eyebrow" data-cms="about_mission_eyebrow">Misión</p>
+          <h2 class="section-title" data-cms="about_mission_title">Nuestro Propósito</h2>
+          <p class="section-subtitle" data-cms="about_mission_subtitle">Crear calzado que combine innovación, comodidad y estilo sin compromisos.</p>
         </div>
-        <div class="categories-grid" id="categoriesGrid">
-          <div class="category-card">
-            <a class="category-cube" data-category="running" href="tienda.html?category=running" aria-label="Ver categoría Running"></a>
-            <div class="category-card__info">
-              <h3 class="category-card__name">Running</h3>
-              <p class="category-card__count">7 productos</p>
-            </div>
+        <div class="page-grid page-grid--2col">
+          <div class="page-card" data-cms="about_mission_card1">
+            <div class="page-card__icon"><i data-lucide="target"></i></div>
+            <h3 class="page-card__title">Innovación Constante</h3>
+            <p class="page-card__text">Cada temporada investigamos nuevas tecnologías y materiales para ofrecerte lo mejor en cada paso.</p>
           </div>
-          <div class="category-card">
-            <a class="category-cube" data-category="casual" href="tienda.html?category=casual" aria-label="Ver categoría Casual"></a>
-            <div class="category-card__info">
-              <h3 class="category-card__name">Casual</h3>
-              <p class="category-card__count">7 productos</p>
-            </div>
-          </div>
-          <div class="category-card">
-            <a class="category-cube" data-category="formal" href="tienda.html?category=formal" aria-label="Ver categoría Formal"></a>
-            <div class="category-card__info">
-              <h3 class="category-card__name">Formal</h3>
-              <p class="category-card__count">5 productos</p>
-            </div>
-          </div>
-          <div class="category-card">
-            <a class="category-cube" data-category="deportivo" href="tienda.html?category=deportivo" aria-label="Ver categoría Deportivo"></a>
-            <div class="category-card__info">
-              <h3 class="category-card__name">Deportivo</h3>
-              <p class="category-card__count">7 productos</p>
-            </div>
-          </div>
-          <div class="category-card">
-            <a class="category-cube" data-category="lifestyle" href="tienda.html?category=lifestyle" aria-label="Ver categoría Lifestyle"></a>
-            <div class="category-card__info">
-              <h3 class="category-card__name">Lifestyle</h3>
-              <p class="category-card__count">6 productos</p>
-            </div>
-          </div>
-          <div class="category-card">
-            <a class="category-cube" data-category="outdoor" href="tienda.html?category=outdoor" aria-label="Ver categoría Outdoor"></a>
-            <div class="category-card__info">
-              <h3 class="category-card__name">Outdoor</h3>
-              <p class="category-card__count">4 productos</p>
-            </div>
+          <div class="page-card" data-cms="about_mission_card2">
+            <div class="page-card__icon"><i data-lucide="heart"></i></div>
+            <h3 class="page-card__title">Diseño con Alma</h3>
+            <p class="page-card__text">No seguimos tendencias, las creamos. Cada diseño cuenta una historia y refleja tu personalidad.</p>
           </div>
         </div>
       </div>
     </section>
-    <section class="section section--alt" id="destacados">
+
+    <!-- Values Section -->
+    <section class="section section--alt page-section" id="valores">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">Destacados</p>
-          <h2 class="section-title">Los más buscados</h2>
+          <p class="eyebrow" data-cms="about_values_eyebrow">Valores</p>
+          <h2 class="section-title" data-cms="about_values_title">Lo Que Nos Define</h2>
         </div>
-        <div class="product-grid" id="featuredGrid"></div>
-      </div>
-    </section>
-    <section class="section" id="showcase">
-      <div class="container">
-        <div class="showcase">
-          <div class="showcase-canvas" id="showcaseCanvas" data-product-id="1"></div>
-          <div class="showcase-info">
-            <p class="eyebrow">Producto destacado</p>
-            <h2 class="section-title" id="showcaseName"></h2>
-            <p id="showcaseDesc"></p>
-            <p class="showcase-price" id="showcasePrice"></p>
-            <div class="color-swatches">
-              <button class="color-swatch is-active" data-hex="#1A1A1A" data-color="Negro" aria-label="Color Negro" style="background-color:#1A1A1A"></button>
-              <button class="color-swatch" data-hex="#FFFFFF" data-color="Blanco" aria-label="Color Blanco" style="background-color:#FFFFFF"></button>
-              <button class="color-swatch" data-hex="#FF6B35" data-color="Naranja" aria-label="Color Naranja" style="background-color:#FF6B35"></button>
-            </div>
-            <div class="showcase-actions">
-              <button class="btn btn-primary btn-lg" data-add-to-cart="1">Añadir al carrito</button>
-            </div>
+        <div class="page-grid page-grid--3col">
+          <div class="page-card page-card--large" data-cms="about_value1">
+            <div class="page-card__number">01</div>
+            <h3 class="page-card__title">Calidad Superior</h3>
+            <p class="page-card__text">Materiales premium y control de calidad riguroso en cada par que sale de nuestro taller.</p>
+          </div>
+          <div class="page-card page-card--large" data-cms="about_value2">
+            <div class="page-card__number">02</div>
+            <h3 class="page-card__title">Sostenibilidad</h3>
+            <p class="page-card__text">Comprometidos con el medio ambiente, usamos materiales reciclados y procesos eco-friendly.</p>
+          </div>
+          <div class="page-card page-card--large" data-cms="about_value3">
+            <div class="page-card__number">03</div>
+            <h3 class="page-card__title">Comunidad</h3>
+            <p class="page-card__text">Más que una marca, somos una comunidad de personas que comparten la pasión por el estilo.</p>
           </div>
         </div>
       </div>
     </section>
-    <section class="section section--alt" id="historia">
+
+    <!-- Stats Section -->
+    <section class="section page-section" id="estadisticas">
       <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">Nuestra Historia</p>
-          <h2 class="section-title">Un paso a la vez</h2>
-        </div>
-        <div class="timeline" id="timeline">
-          <div class="timeline-canvas" id="timelineCanvas"></div>
-        </div>
-      </div>
-    </section>
-    <section class="section" id="testimonios">
-      <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">Testimonios</p>
-          <h2 class="section-title">Lo que dicen nuestros clientes</h2>
-        </div>
-        <div class="testimonials">
-          <button class="testimonial-arrow prev" aria-label="Testimonio anterior"><i data-lucide="chevron-left"></i></button>
-          <div class="testimonials__viewport">
-            <div class="testimonial-track">
-              <div class="testimonial-slide">
-                <img class="testimonial-slide__photo" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80" alt="Foto de Carlos Mendoza" loading="lazy" width="64" height="64">
-                <p class="testimonial-slide__name">Carlos Mendoza</p>
-                <p class="testimonial-slide__role">Corredor amateur</p>
-                <div class="stars" aria-label="Calificación: 5 de 5">
-                  <i data-lucide="star"></i>
-                  <i data-lucide="star"></i>
-                  <i data-lucide="star"></i>
-                  <i data-lucide="star"></i>
-                  <i data-lucide="star"></i>
-                </div>
-                <p>Las AirRunner Pro cambiaron por completo mis entrenamientos. Ligereza y amortiguación que no había probado en ninguna otra marca.</p>
-              </div>
-              <div class="testimonial-slide">
-                <img class="testimonial-slide__photo" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80" alt="Foto de Lucía Fernández" loading="lazy" width="64" height="64">
-                <p class="testimonial-slide__name">Lucía Fernández</p>
-                <p class="testimonial-slide__role">Diseñadora</p>
-                <div class="stars" aria-label="Calificación: 4.5 de 5">
-                  <i data-lucide="star"></i>
-                  <i data-lucide="star"></i>
-                  <i data-lucide="star"></i>
-                  <i data-lucide="star"></i>
-                  <i data-lucide="star-half"></i>
-                </div>
-                <p>Combinan estilo y comodidad a la perfección. Los uso todos los días en la oficina y siguen impecables después de meses.</p>
-              </div>
-              <div class="testimonial-slide">
-                <img class="testimonial-slide__photo" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&auto=format&fit=crop&q=80" alt="Foto de Andrés Ruiz" loading="lazy" width="64" height="64">
-                <p class="testimonial-slide__name">Andrés Ruiz</p>
-                <p class="testimonial-slide__role">Viajero frecuente</p>
-                <div class="stars" aria-label="Calificación: 5 de 5">
-                  <i data-lucide="star"></i>
-                  <i data-lucide="star"></i>
-                  <i data-lucide="star"></i>
-                  <i data-lucide="star"></i>
-                  <i data-lucide="star"></i>
-                </div>
-                <p>Pedí desde el extranjero y llegó en tiempo récord. La calidad es superior y el servicio al cliente, excelente.</p>
-              </div>
-            </div>
+        <div class="page-stats">
+          <div class="page-stat" data-cms="about_stat1">
+            <span class="page-stat__number" data-count="50000">0</span>
+            <span class="page-stat__label">Clientes Satisfechos</span>
           </div>
-          <button class="testimonial-arrow next" aria-label="Testimonio siguiente"><i data-lucide="chevron-right"></i></button>
+          <div class="page-stat" data-cms="about_stat2">
+            <span class="page-stat__number" data-count="150">0</span>
+            <span class="page-stat__label">Modelos Únicos</span>
+          </div>
+          <div class="page-stat" data-cms="about_stat3">
+            <span class="page-stat__number" data-count="25">0</span>
+            <span class="page-stat__label">Países</span>
+          </div>
+          <div class="page-stat" data-cms="about_stat4">
+            <span class="page-stat__number" data-count="10">0</span>
+            <span class="page-stat__label">Años de Experiencia</span>
+          </div>
         </div>
       </div>
     </section>
-    <section class="section" id="contacto">
+
+    <!-- Team Section -->
+    <section class="section section--alt page-section" id="equipo">
       <div class="container">
-        <div class="newsletter__inner">
-          <p class="eyebrow">Newsletter</p>
-          <h2 class="section-title">Únete a SoleStyle</h2>
-          <p>Recibe novedades, lanzamientos y ofertas exclusivas directamente en tu correo.</p>
-          <form class="newsletter-form" id="newsletterForm" novalidate>
-            <input type="email" class="newsletter-input" id="newsletterEmail" placeholder="tu@email.com" aria-label="Tu correo electrónico">
-            <button class="btn btn-primary" type="submit">Suscribirme</button>
-          </form>
-          <p class="newsletter-msg" id="newsletterMsg"></p>
+        <div class="section-head">
+          <p class="eyebrow" data-cms="about_team_eyebrow">Equipo</p>
+          <h2 class="section-title" data-cms="about_team_title">Conoce al Equipo</h2>
+          <p class="section-subtitle" data-cms="about_team_subtitle">Personas apasionadas detrás de cada diseño.</p>
+        </div>
+        <div class="page-grid page-grid--4col">
+          <div class="page-team-card" data-cms="about_team1">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80" alt="Foto de Carlos Mendoza" class="page-team-card__image" loading="lazy" width="400" height="400">
+            <h3 class="page-team-card__name">Carlos Mendoza</h3>
+            <p class="page-team-card__role">Director Creativo</p>
+          </div>
+          <div class="page-team-card" data-cms="about_team2">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80" alt="Foto de Lucía Fernández" class="page-team-card__image" loading="lazy" width="400" height="400">
+            <h3 class="page-team-card__name">Lucía Fernández</h3>
+            <p class="page-team-card__role">Jefa de Diseño</p>
+          </div>
+          <div class="page-team-card" data-cms="about_team3">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&auto=format&fit=crop&q=80" alt="Foto de Andrés Ruiz" class="page-team-card__image" loading="lazy" width="400" height="400">
+            <h3 class="page-team-card__name">Andrés Ruiz</h3>
+            <p class="page-team-card__role">Ingeniero de Producto</p>
+          </div>
+          <div class="page-team-card" data-cms="about_team4">
+            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&auto=format&fit=crop&q=80" alt="Foto de María López" class="page-team-card__image" loading="lazy" width="400" height="400">
+            <h3 class="page-team-card__name">María López</h3>
+            <p class="page-team-card__role">Directora de Marketing</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section page-section" id="cta">
+      <div class="container">
+        <div class="page-cta">
+          <h2 class="page-cta__title" data-cms="about_cta_title">¿Listo para Encontrar tu Estilo?</h2>
+          <p class="page-cta__text" data-cms="about_cta_text">Explora nuestra colección y descubre la zapatilla perfecta para ti.</p>
+          <a href="tienda.html" class="btn btn-primary btn-lg">Explorar Colección</a>
         </div>
       </div>
     </section>
   </main>
+
   <footer class="site-footer">
     <canvas class="footer-waves" id="footerWaves" aria-hidden="true"></canvas>
     <div class="site-footer__content container">
@@ -328,6 +267,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="js/modules/loading.js"></script>
-  <script type="module" src="js/main.js" data-page="home"></script>
+  <script type="module" src="js/main.js" data-page="about"></script>
+  <script type="module" src="js/pages/page-animations.js"></script>
 </body>
 </html>

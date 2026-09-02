@@ -85,7 +85,8 @@ function seedPages() {
         { key: 'hero_subtitle', label: 'Subtítulo Hero', content: 'Zapatillas premium que combinan tecnología y diseño.' },
         { key: 'featured_title', label: 'Título Destacados', content: 'Los Más Vendidos' },
         { key: 'featured_desc', label: 'Descripción Destacados', content: 'Descubre nuestros modelos más populares.' }
-      ]
+      ],
+      backgroundAnimation: 'particles'
     },
     {
       id: 'tienda',
@@ -97,7 +98,8 @@ function seedPages() {
         { key: 'catalog_desc', label: 'Descripción Catálogo', content: 'Encuentra la zapatilla perfecta para cada ocasión.' },
         { key: 'filter_label', label: 'Etiqueta de Filtros', content: 'Filtrar por:' },
         { key: 'empty_msg', label: 'Mensaje sin resultados', content: 'No se encontraron productos con estos filtros.' }
-      ]
+      ],
+      backgroundAnimation: 'waves'
     },
     {
       id: 'producto',
@@ -109,7 +111,8 @@ function seedPages() {
         { key: 'specs_title', label: 'Título Especificaciones', content: 'Especificaciones' },
         { key: 'reviews_title', label: 'Título Reseñas', content: 'Reseñas de Clientes' },
         { key: 'warranty_text', label: 'Texto de Garantía', content: 'Garantía de 12 meses contra defectos de fabricación.' }
-      ]
+      ],
+      backgroundAnimation: 'geometric'
     },
     {
       id: 'favoritos',
@@ -121,7 +124,70 @@ function seedPages() {
         { key: 'empty_desc', label: 'Descripción Vacía', content: 'Explora nuestro catálogo y guarda los productos que más te gusten.' },
         { key: 'move_to_cart', label: 'Texto Botón Mover', content: 'Mover al carrito' },
         { key: 'remove_label', label: 'Etiqueta Eliminar', content: 'Eliminar de favoritos' }
-      ]
+      ],
+      backgroundAnimation: 'fluid'
+    },
+    {
+      id: 'about',
+      title: 'Sobre Nosotros',
+      slug: 'sobre-nosotros.html',
+      content: '<h1>Sobre Nosotros</h1><p>Conoce la historia detrás de SoleStyle.</p>',
+      sections: [
+        { key: 'about_hero_eyebrow', label: 'Eyebrow Hero', content: 'Nuestra Historia' },
+        { key: 'about_hero_title', label: 'Título Hero', content: 'Pasión por el Estilo' },
+        { key: 'about_hero_subtitle', label: 'Subtítulo Hero', content: 'Conoce la historia detrás de cada zapatilla que creamos.' },
+        { key: 'about_mission_eyebrow', label: 'Eyebrow Misión', content: 'Misión' },
+        { key: 'about_mission_title', label: 'Título Misión', content: 'Nuestro Propósito' },
+        { key: 'about_mission_subtitle', label: 'Subtítulo Misión', content: 'Crear calzado que combine innovación, comodidad y estilo sin compromisos.' },
+        { key: 'about_mission_card1', label: 'Tarjeta Misión 1', content: 'Innovación Constante - Cada temporada investigamos nuevas tecnologías y materiales para ofrecerte lo mejor en cada paso.' },
+        { key: 'about_mission_card2', label: 'Tarjeta Misión 2', content: 'Diseño con Alma - No seguimos tendencias, las creamos. Cada diseño cuenta una historia y refleja tu personalidad.' },
+        { key: 'about_values_eyebrow', label: 'Eyebrow Valores', content: 'Valores' },
+        { key: 'about_values_title', label: 'Título Valores', content: 'Lo Que Nos Define' },
+        { key: 'about_value1', label: 'Valor 1', content: 'Calidad Superior - Materiales premium y control de calidad riguroso en cada par que sale de nuestro taller.' },
+        { key: 'about_value2', label: 'Valor 2', content: 'Sostenibilidad - Comprometidos con el medio ambiente, usamos materiales reciclados y procesos eco-friendly.' },
+        { key: 'about_value3', label: 'Valor 3', content: 'Comunidad - Más que una marca, somos una comunidad de personas que comparten la pasión por el estilo.' },
+        { key: 'about_team_eyebrow', label: 'Eyebrow Equipo', content: 'Equipo' },
+        { key: 'about_team_title', label: 'Título Equipo', content: 'Conoce al Equipo' },
+        { key: 'about_team_subtitle', label: 'Subtítulo Equipo', content: 'Personas apasionadas detrás de cada diseño.' },
+        { key: 'about_cta_title', label: 'Título CTA', content: '¿Listo para Encontrar tu Estilo?' },
+        { key: 'about_cta_text', label: 'Texto CTA', content: 'Explora nuestra colección y descubre la zapatilla perfecta para ti.' }
+      ],
+      backgroundAnimation: 'particles'
+    },
+    {
+      id: 'contact',
+      title: 'Contacto',
+      slug: 'contacto.html',
+      content: '<h1>Contacto</h1><p>Estamos aquí para ayudarte.</p>',
+      sections: [
+        { key: 'contact_hero_eyebrow', label: 'Eyebrow Hero', content: 'Contacto' },
+        { key: 'contact_hero_title', label: 'Título Hero', content: 'Hablemos Juntos' },
+        { key: 'contact_hero_subtitle', label: 'Subtítulo Hero', content: 'Estamos aquí para ayudarte. Escríbanos y le responderemos pronto.' },
+        { key: 'contact_form_title', label: 'Título Formulario', content: 'Envíanos un Mensaje' },
+        { key: 'contact_form_name_label', label: 'Etiqueta Nombre', content: 'Nombre' },
+        { key: 'contact_form_email_label', label: 'Etiqueta Email', content: 'Email' },
+        { key: 'contact_form_subject_label', label: 'Etiqueta Asunto', content: 'Asunto' },
+        { key: 'contact_form_message_label', label: 'Etiqueta Mensaje', content: 'Mensaje' },
+        { key: 'contact_form_submit', label: 'Botón Enviar', content: 'Enviar Mensaje' },
+        { key: 'contact_success_title', label: 'Título Éxito', content: '¡Mensaje Enviado!' },
+        { key: 'contact_success_text', label: 'Texto Éxito', content: 'Gracias por contactarnos. Te responderemos en menos de 24 horas.' },
+        { key: 'contact_info1', label: 'Info Dirección', content: 'Dirección - Av. Reforma 123, Col. Centro, Ciudad de México, 06000' },
+        { key: 'contact_info2', label: 'Info Teléfono', content: 'Teléfono - +52 (55) 1234-5678, Lun - Vie, 9am - 6pm' },
+        { key: 'contact_info3', label: 'Info Email', content: 'Email - hola@solestyle.com, soporte@solestyle.com' },
+        { key: 'contact_info4', label: 'Info Horario', content: 'Horario - Lunes a Viernes: 9am - 6pm, Sábados: 10am - 2pm' },
+        { key: 'contact_faq_eyebrow', label: 'Eyebrow FAQ', content: 'Preguntas Frecuentes' },
+        { key: 'contact_faq_title', label: 'Título FAQ', content: '¿Cómo Podemos Ayudarte?' },
+        { key: 'contact_faq1', label: 'FAQ 1', content: '¿Cuál es el tiempo de envío? - El tiempo de envío estándar es de 3-5 días hábiles para envíos nacionales.' },
+        { key: 'contact_faq2', label: 'FAQ 2', content: '¿Puedo devolver un producto? - Sí, tienes 30 días para devolver cualquier producto en su estado original.' },
+        { key: 'contact_faq3', label: 'FAQ 3', content: '¿Cómo puedo rastrear mi pedido? - Recibirás un email con un número de rastreo una vez enviado.' },
+        { key: 'contact_faq4', label: 'FAQ 4', content: '¿Ofrecen envío gratis? - Sí, ofrecemos envío gratis en pedidos superiores a $2,000 MXN.' },
+        { key: 'contact_map_eyebrow', label: 'Eyebrow Mapa', content: 'Ubicación' },
+        { key: 'contact_map_title', label: 'Título Mapa', content: 'Encuéntranos' },
+        { key: 'contact_map_subtitle', label: 'Subtítulo Mapa', content: 'Visita nuestra tienda flagship en el corazón de la ciudad.' },
+        { key: 'contact_cta_title', label: 'Título CTA', content: '¿Tienes Alguna Otra Pregunta?' },
+        { key: 'contact_cta_text', label: 'Texto CTA', content: 'No dudes en escribirnos. Nuestro equipo está listo para ayudarte.' }
+      ],
+      backgroundAnimation: 'waves'
     }
   ];
 }
@@ -191,8 +257,8 @@ function seedSiteContent() {
     navLinks: [
       { label: 'Inicio', href: 'index.html' },
       { label: 'Tienda', href: 'tienda.html' },
-      { label: 'Colecciones', href: 'index.html#colecciones' },
-      { label: 'Contacto', href: 'index.html#contacto' }
+      { label: 'Sobre Nosotros', href: 'sobre-nosotros.html' },
+      { label: 'Contacto', href: 'contacto.html' }
     ],
     heroEyebrow: 'Colección 2026',
     heroTitle: 'Pisa',
@@ -1208,6 +1274,14 @@ function renderPageEdit(page) {
   const container = qs('#section-pages');
   if (!container) return;
 
+  const animationOptions = [
+    { value: 'particles', label: 'Partículas Conectadas' },
+    { value: 'waves', label: 'Ondas Fluidas' },
+    { value: 'geometric', label: 'Geometría Flotante' },
+    { value: 'fluid', label: 'Fluido Orgánico' },
+    { value: 'neural', label: 'Red Neuronal' }
+  ];
+
   container.innerHTML = `
     <div style="margin-bottom:var(--space-lg);">
       <button class="cms-btn cms-btn--ghost" id="btn-back-pages">
@@ -1227,6 +1301,16 @@ function renderPageEdit(page) {
       <div class="cms-form-group">
         <label for="pg-content">Contenido Principal (HTML)</label>
         <textarea id="pg-content" class="cms-form-textarea" rows="4">${escHtml(page.content)}</textarea>
+      </div>
+
+      <div class="cms-form-group">
+        <label for="pg-animation">Animación de Fondo</label>
+        <select id="pg-animation" class="cms-form-input">
+          ${animationOptions.map(opt => `
+            <option value="${opt.value}" ${page.backgroundAnimation === opt.value ? 'selected' : ''}>${opt.label}</option>
+          `).join('')}
+        </select>
+        <p class="cms-form-help">Selecciona la animación de fondo que se mostrará en esta página.</p>
       </div>
 
       <div style="border-top:1px solid var(--color-border);padding-top:var(--space-lg);margin-top:var(--space-sm);">
@@ -1267,6 +1351,7 @@ function renderPageEdit(page) {
 
     pages[idx].title = qs('#pg-title').value.trim() || page.title;
     pages[idx].content = qs('#pg-content').value.trim();
+    pages[idx].backgroundAnimation = qs('#pg-animation').value;
 
     // Update sections
     qsa('#page-form textarea[data-section-key]').forEach(textarea => {
