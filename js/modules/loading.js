@@ -23,7 +23,7 @@
   requestAnimationFrame(tick);
 
   // ---- Three.js scene ----
-  let renderer, scene, camera, wireframe, particles, clock;
+  let renderer, scene, camera, wireframe, particles, clock, velocities;
   let raf;
 
   function init() {
@@ -66,7 +66,7 @@
     // Particles
     const count = 200;
     const positions = new Float32Array(count * 3);
-    const velocities = [];
+    velocities = [];
     for (let i = 0; i < count; i++) {
       const r = 2 + Math.random() * 3;
       const theta = Math.random() * Math.PI * 2;
@@ -155,6 +155,7 @@
     camera = null;
     wireframe = null;
     particles = null;
+    velocities = null;
   }
 
   // ---- Dismiss loading ----
