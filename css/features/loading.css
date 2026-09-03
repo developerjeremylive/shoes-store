@@ -18,6 +18,13 @@
   pointer-events: none;
 }
 
+.loading-overlay.is-bg {
+  opacity: 1;
+  visibility: visible;
+  background: transparent !important;
+  z-index: -1 !important;
+}
+
 .loading-canvas {
   position: absolute;
   inset: 0;
