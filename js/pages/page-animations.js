@@ -20,10 +20,9 @@ class PageAnimations {
   }
   
   getPageId() {
-    const path = window.location.pathname;
-    if (path.includes('sobre-nosotros')) return 'about';
-    if (path.includes('contacto')) return 'contact';
-    return 'about';
+    const page = document.querySelector('script[data-page]')?.dataset.page;
+    const map = { home: 'index', tienda: 'tienda', producto: 'producto', favoritos: 'favoritos', about: 'about', contact: 'contact' };
+    return map[page] || 'index';
   }
   
   loadAnimationType() {
@@ -36,7 +35,7 @@ class PageAnimations {
     } catch (e) {}
     
     // Default animations per page
-    return this.pageId === 'about' ? 'particles' : 'waves';
+    return this.pageId === 'index' ? 'particles' : 'waves';
   }
   
   init() {
@@ -908,7 +907,8 @@ class MatrixAnimation {
 
 function initPageAnimations() {
   const page = document.querySelector('script[data-page]')?.dataset.page;
-  if (page === 'about' || page === 'contact') {
+  const validPages = ['home', 'tienda', 'producto', 'favoritos', 'about', 'contact'];
+  if (validPages.includes(page)) {
     window.pageAnimations = new PageAnimations();
     
     window.addEventListener('animationChanged', (e) => {
