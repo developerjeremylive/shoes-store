@@ -81,6 +81,21 @@ class PageAnimations {
       case 'neural':
         this.currentAnimation = new NeuralAnimation(this);
         break;
+      case 'starfield':
+        this.currentAnimation = new StarfieldAnimation(this);
+        break;
+      case 'bokeh':
+        this.currentAnimation = new BokehAnimation(this);
+        break;
+      case 'ripple':
+        this.currentAnimation = new RippleAnimation(this);
+        break;
+      case 'lava':
+        this.currentAnimation = new LavaAnimation(this);
+        break;
+      case 'matrix':
+        this.currentAnimation = new MatrixAnimation(this);
+        break;
       default:
         this.currentAnimation = new ParticlesAnimation(this);
     }
@@ -540,6 +555,351 @@ class NeuralAnimation {
       ctx.beginPath();
       ctx.arc(node.x, node.y, size, 0, Math.PI * 2);
       ctx.fill();
+    });
+  }
+  
+  destroy() {}
+}
+
+// ── Starfield Animation ────────────────────────────────────────
+class StarfieldAnimation {
+  constructor(app) {
+    this.app = app;
+    this.stars = [];
+    this.init();
+  }
+  
+  init() {
+    const count = Math.min(300, Math.floor((this.app.width * this.app.height) / 3000));
+    for (let i = 0; i < count; i++) {
+      this.stars.push(this.createStar());
+    }
+  }
+  
+  createStar() {
+    return {
+      x: (Math.random() - 0.5) * this.app.width * 2,
+      y: (Math.random() - 0.5) * this.app.height * 2,
+      z: Math.random() * 1000,
+      pz: 0,
+      size: Math.random() * 1.5 + 0.5
+    };
+  }
+  
+  update() {
+    const speed = 8;
+    this.stars.forEach(star => {
+      star.pz = star.z;
+      star.z -= speed;
+      if (star.z < 1) {
+        Object.assign(star, this.createStar());
+        star.z = 1000;
+        star.pz = 1000;
+      }
+    });
+  }
+  
+  draw() {
+    const ctx = this.app.ctx;
+    const cx = this.app.width / 2;
+    const cy = this.app.height / 2;
+    
+    this.stars.forEach(star => {
+      const sx = (star.x / star.z) * 500 + cx;
+      const sy = (star.y / star.z) * 500 + cy;
+      const px = (star.x / star.pz) * 500 + cx;
+      const py = (star.y / star.pz) * 500 + cy;
+      
+      const size = ((1000 - star.z) / 1000) * star.size * 3;
+      const opacity = ((1000 - star.z) / 1000) * 0.8;
+      
+      ctx.strokeStyle = `rgba(255, 107, 53, ${opacity})`;
+      ctx.lineWidth = size;
+      ctx.beginPath();
+      ctx.moveTo(px, py);
+      ctx.lineTo(sx, sy);
+      ctx.stroke();
+    });
+  }
+  
+  destroy() {}
+}
+
+// ── Bokeh Animation ────────────────────────────────────────────
+class BokehAnimation {
+  constructor(app) {
+    this.app = app;
+    this.circles = [];
+    this.time = 0;
+    this.init();
+  }
+  
+  init() {
+    const count = Math.min(25, Math.floor((this.app.width * this.app.height) / 40000));
+    const colors = [
+      { r: 255, g: 107, b: 53 },
+      { r: 255, g: 150, b: 100 },
+      { r: 255, g: 80, b: 40 },
+      { r: 220, g: 90, b: 45 },
+      { r: 255, g: 180, b: 130 }
+    ];
+    
+    for (let i = 0; i < count; i++) {
+      this.circles.push({
+        x: Math.random() * this.app.width,
+        y: Math.random() * this.app.height,
+        radius: Math.random() * 120 + 40,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        opacity: Math.random() * 0.08 + 0.02,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        phase: Math.random() * Math.PI * 2,
+        pulseSpeed: Math.random() * 0.01 + 0.005
+      });
+    }
+  }
+  
+  update() {
+    this.time += 0.016;
+    
+    this.circles.forEach(c => {
+      c.x += c.vx + Math.sin(this.time * 0.3 + c.phase) * 0.2;
+      c.y += c.vy + Math.cos(this.time * 0.2 + c.phase) * 0.2;
+      
+      if (c.x < -c.radius) c.x = this.app.width + c.radius;
+      if (c.x > this.app.width + c.radius) c.x = -c.radius;
+      if (c.y < -c.radius) c.y = this.app.height + c.radius;
+      if (c.y > this.app.height + c.radius) c.y = -c.radius;
+    });
+  }
+  
+  draw() {
+    const ctx = this.app.ctx;
+    
+    this.circles.forEach(c => {
+      const pulse = Math.sin(this.time * c.pulseSpeed + c.phase) * 0.3 + 1;
+      const r = c.radius * pulse;
+      
+      const gradient = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, r);
+      gradient.addColorStop(0, `rgba(${c.color.r}, ${c.color.g}, ${c.color.b}, ${c.opacity * 1.5})`);
+      gradient.addColorStop(0.5, `rgba(${c.color.r}, ${c.color.g}, ${c.color.b}, ${c.opacity * 0.8})`);
+      gradient.addColorStop(1, `rgba(${c.color.r}, ${c.color.g}, ${c.color.b}, 0)`);
+      
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
+  
+  destroy() {}
+}
+
+// ── Ripple Animation ───────────────────────────────────────────
+class RippleAnimation {
+  constructor(app) {
+    this.app = app;
+    this.ripples = [];
+    this.time = 0;
+    this.init();
+  }
+  
+  init() {
+    this.spawnRipple();
+    this.spawnInterval = setInterval(() => this.spawnRipple(), 2500);
+  }
+  
+  spawnRipple() {
+    this.ripples.push({
+      x: Math.random() * this.app.width,
+      y: Math.random() * this.app.height,
+      radius: 0,
+      maxRadius: Math.random() * 300 + 150,
+      opacity: 0.25,
+      speed: Math.random() * 1.5 + 0.8
+    });
+    
+    if (this.ripples.length > 8) {
+      this.ripples.shift();
+    }
+  }
+  
+  update() {
+    this.time += 0.016;
+    
+    this.ripples.forEach(r => {
+      r.radius += r.speed;
+      r.opacity = 0.25 * (1 - r.radius / r.maxRadius);
+    });
+    
+    this.ripples = this.ripples.filter(r => r.radius < r.maxRadius);
+  }
+  
+  draw() {
+    const ctx = this.app.ctx;
+    
+    this.ripples.forEach(r => {
+      for (let i = 0; i < 3; i++) {
+        const ringRadius = r.radius - i * 15;
+        if (ringRadius <= 0) continue;
+        
+        const ringOpacity = r.opacity * (1 - i * 0.3);
+        ctx.strokeStyle = `rgba(255, 107, 53, ${Math.max(0, ringOpacity)})`;
+        ctx.lineWidth = 2 - i * 0.5;
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, ringRadius, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    });
+  }
+  
+  destroy() {
+    if (this.spawnInterval) clearInterval(this.spawnInterval);
+  }
+}
+
+// ── Lava Animation ─────────────────────────────────────────────
+class LavaAnimation {
+  constructor(app) {
+    this.app = app;
+    this.blobs = [];
+    this.time = 0;
+    this.init();
+  }
+  
+  init() {
+    const count = Math.min(6, Math.floor((this.app.width * this.app.height) / 80000));
+    const colors = [
+      { r: 255, g: 107, b: 53 },
+      { r: 255, g: 60, b: 20 },
+      { r: 200, g: 40, b: 15 },
+      { r: 255, g: 140, b: 50 }
+    ];
+    
+    for (let i = 0; i < count; i++) {
+      this.blobs.push({
+        x: Math.random() * this.app.width,
+        y: Math.random() * this.app.height,
+        baseX: Math.random() * this.app.width,
+        baseY: Math.random() * this.app.height,
+        radius: Math.random() * 180 + 80,
+        color: colors[i % colors.length],
+        phase: Math.random() * Math.PI * 2,
+        speedX: Math.random() * 0.008 + 0.003,
+        speedY: Math.random() * 0.006 + 0.002,
+        amplitude: Math.random() * 200 + 100
+      });
+    }
+  }
+  
+  update() {
+    this.time += 0.016;
+    
+    this.blobs.forEach(b => {
+      b.x = b.baseX + Math.sin(this.time * b.speedX + b.phase) * b.amplitude;
+      b.y = b.baseY + Math.cos(this.time * b.speedY + b.phase * 1.3) * b.amplitude * 0.7;
+    });
+  }
+  
+  draw() {
+    const ctx = this.app.ctx;
+    
+    this.blobs.forEach(b => {
+      const wobble1 = Math.sin(this.time * 1.5 + b.phase) * 0.15 + 1;
+      const wobble2 = Math.cos(this.time * 1.2 + b.phase * 0.7) * 0.1 + 1;
+      const rx = b.radius * wobble1;
+      const ry = b.radius * wobble2;
+      
+      ctx.save();
+      ctx.translate(b.x, b.y);
+      
+      const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, rx);
+      gradient.addColorStop(0, `rgba(${b.color.r}, ${b.color.g}, ${b.color.b}, 0.12)`);
+      gradient.addColorStop(0.6, `rgba(${b.color.r}, ${b.color.g}, ${b.color.b}, 0.06)`);
+      gradient.addColorStop(1, `rgba(${b.color.r}, ${b.color.g}, ${b.color.b}, 0)`);
+      
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.restore();
+    });
+  }
+  
+  destroy() {}
+}
+
+// ── Matrix Rain Animation ──────────────────────────────────────
+class MatrixAnimation {
+  constructor(app) {
+    this.app = app;
+    this.columns = [];
+    this.fontSize = 14;
+    this.init();
+  }
+  
+  init() {
+    const cols = Math.floor(this.app.width / this.fontSize);
+    for (let i = 0; i < cols; i++) {
+      this.columns.push({
+        y: Math.random() * this.app.height,
+        speed: Math.random() * 1.5 + 0.5,
+        chars: this.generateChars()
+      });
+    }
+  }
+  
+  generateChars() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&* solestyle';
+    const len = Math.floor(Math.random() * 15) + 8;
+    let result = '';
+    for (let i = 0; i < len; i++) {
+      result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return result;
+  }
+  
+  update() {
+    this.columns.forEach(col => {
+      col.y += col.speed;
+      if (col.y > this.app.height + 200) {
+        col.y = -200;
+        col.speed = Math.random() * 1.5 + 0.5;
+        col.chars = this.generateChars();
+      }
+    });
+  }
+  
+  draw() {
+    const ctx = this.app.ctx;
+    
+    this.columns.forEach((col, i) => {
+      const x = i * this.fontSize;
+      
+      for (let j = 0; j < col.chars.length; j++) {
+        const y = col.y + j * this.fontSize;
+        if (y < -this.fontSize || y > this.app.height + this.fontSize) continue;
+        
+        const distFromHead = j;
+        let opacity;
+        if (distFromHead === 0) {
+          opacity = 0.9;
+        } else if (distFromHead < 3) {
+          opacity = 0.6 - distFromHead * 0.1;
+        } else {
+          opacity = Math.max(0.02, 0.3 - distFromHead * 0.015);
+        }
+        
+        if (distFromHead === 0) {
+          ctx.fillStyle = `rgba(255, 200, 150, ${opacity})`;
+        } else {
+          ctx.fillStyle = `rgba(255, 107, 53, ${opacity})`;
+        }
+        
+        ctx.font = `${this.fontSize}px monospace`;
+        ctx.fillText(col.chars[j], x, y);
+      }
     });
   }
   

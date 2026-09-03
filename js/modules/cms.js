@@ -1279,7 +1279,12 @@ function renderPageEdit(page) {
     { value: 'waves', label: 'Ondas Fluidas' },
     { value: 'geometric', label: 'Geometría Flotante' },
     { value: 'fluid', label: 'Fluido Orgánico' },
-    { value: 'neural', label: 'Red Neuronal' }
+    { value: 'neural', label: 'Red Neuronal' },
+    { value: 'starfield', label: 'Starfield Warp' },
+    { value: 'bokeh', label: 'Bokeh Luces' },
+    { value: 'ripple', label: 'Ondas de Agua' },
+    { value: 'lava', label: 'Láva Flotante' },
+    { value: 'matrix', label: 'Lluvia Matrix' }
   ];
 
   container.innerHTML = `
