@@ -166,16 +166,9 @@
     if (barFill) barFill.style.width = '100%';
 
     setTimeout(() => {
-      const content = overlay.querySelector('.loading-content');
-      if (content) content.remove();
-
-      overlay.style.background = 'transparent';
-      overlay.style.zIndex = '-1';
-      overlay.style.pointerEvents = 'none';
-      overlay.classList.remove('is-hidden');
-      overlay.classList.add('is-bg');
-
-      if (renderer) renderer.setClearColor(0x000000, 0);
+      overlay.classList.add('is-hidden');
+      dispose();
+      setTimeout(() => overlay.remove(), 700);
     }, 400);
   }
 

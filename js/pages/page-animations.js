@@ -906,23 +906,26 @@ class MatrixAnimation {
   destroy() {}
 }
 
-// ── Initialize on page load ───────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+function initPageAnimations() {
   const page = document.querySelector('script[data-page]')?.dataset.page;
   if (page === 'about' || page === 'contact') {
     window.pageAnimations = new PageAnimations();
     
-    // Listen for animation changes from CMS
     window.addEventListener('animationChanged', (e) => {
       if (window.pageAnimations) {
         window.pageAnimations.setAnimation(e.detail.type);
       }
     });
   }
-});
+}
 
-// ── FAQ Toggle ────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPageAnimations);
+} else {
+  initPageAnimations();
+}
+
+function initFaq() {
   const faqItems = document.querySelectorAll('.faq-item');
   
   faqItems.forEach(item => {
@@ -931,29 +934,25 @@ document.addEventListener('DOMContentLoaded', () => {
       question.addEventListener('click', () => {
         const isOpen = item.classList.contains('is-open');
         
-        // Close all other items
         faqItems.forEach(otherItem => {
           if (otherItem !== item) {
             otherItem.classList.remove('is-open');
           }
         });
         
-        // Toggle current item
         item.classList.toggle('is-open', !isOpen);
       });
     }
   });
-});
+}
 
-// ── Contact Form ──────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+function initContactForm() {
   const form = document.getElementById('contactForm');
   if (!form) return;
   
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     
-    // Simple validation
     const name = document.getElementById('contactName').value.trim();
     const email = document.getElementById('contactEmail').value.trim();
     const subject = document.getElementById('contactSubject').value.trim();
@@ -964,28 +963,24 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       alert('Por favor, ingresa un email válido.');
       return;
     }
     
-    // Simulate form submission
     form.classList.add('is-hidden');
     document.getElementById('contactSuccess').classList.remove('is-hidden');
     
-    // Reset form after delay
     setTimeout(() => {
       form.reset();
       form.classList.remove('is-hidden');
       document.getElementById('contactSuccess').classList.add('is-hidden');
     }, 5000);
   });
-});
+}
 
-// ── Stats Counter Animation ───────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+function initStatsCounter() {
   const stats = document.querySelectorAll('.page-stat__number[data-count]');
   if (!stats.length) return;
   
@@ -1025,6 +1020,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.5 });
   
   stats.forEach(stat => observer.observe(stat));
-});
+}
+
+function bindPageEvents() {
+  initFaq();
+  initContactForm();
+  initStatsCounter();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bindPageEvents);
+} else {
+  bindPageEvents();
+}
 
 export { PageAnimations };
